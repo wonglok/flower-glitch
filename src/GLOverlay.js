@@ -10,7 +10,7 @@ const intensity = new Uniform(23);
 const water = new Uniform(0);
 const amount = new Uniform(1);
 const speed = new Uniform(1 / 10);
-const image = new Uniform(null);
+const dudvImage = new Uniform(null);
 
 setInterval(() => {
   progress.value += 1 / 500;
@@ -29,7 +29,7 @@ uniform float time;
 uniform float intensity;
 uniform float water;
 uniform float amount;
-uniform sampler2D image;
+uniform sampler2D dudvImage;
 #define RATE 0.0015
 
 float rand(vec2 co){
@@ -44,7 +44,7 @@ float offset(float blocks, vec2 uv) {
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
   vec2 screenSize = resolution.xy;
 
-  vec4 dudv = texture2D(image, uv);
+  vec4 dudv = texture2D(dudvImage, uv);
 
   vec2 uv2 = dudv.xz * water / 10.0;
   outputColor = texture(inputBuffer, uv);
@@ -102,7 +102,7 @@ export class CustomEffect extends Effect {
         ["time", timer],
         ["intensity", intensity],
         ["progress", progress],
-        ["image", image],
+        ["dudvImage", dudvImage],
         ["water", water],
         ["amount", amount],
         ["speed", speed],
@@ -133,7 +133,7 @@ function GUISetup() {
 
   let texture = useTexture(`/dudv/water.jpg`);
 
-  image.value = texture;
+  dudvImage.value = texture;
 
   intensity.value = ctrl.intensity;
   water.value = ctrl.water;
