@@ -4,7 +4,6 @@ import { Uniform } from "three";
 import { BlendFunction } from "postprocessing";
 import { useControls } from "leva";
 import { useTexture } from "@react-three/drei";
-import { imageFlower } from "./image";
 const progress = new Uniform(0);
 const timer = new Uniform(0);
 const intensity = new Uniform(23);
