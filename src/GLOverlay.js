@@ -6,10 +6,12 @@ import { useControls } from "leva";
 import { useTexture } from "@react-three/drei";
 const progress = new Uniform(0);
 const timer = new Uniform(0);
+const timer2 = new Uniform(0);
 const water = new Uniform(0);
 const dudvImage = new Uniform(null);
 
 const speed = new Uniform(1 / 10);
+const speed2 = new Uniform(1 / 10);
 
 const amount = new Uniform(0.5);
 const intensity = new Uniform(23);
@@ -23,6 +25,7 @@ setInterval(() => {
     progress.value = 0;
   }
   timer.value = (window.performance.now() / 1000) * speed.value;
+  timer2.value = (window.performance.now() / 1000) * speed2.value;
 });
 //
 
@@ -31,6 +34,7 @@ const fragmentShader = /* glsl */ `
 uniform sampler2D screen;
 uniform float progress;
 uniform float time;
+uniform float time2;
 uniform float intensity;
 uniform float amount;
 uniform float intensity2;
@@ -112,12 +116,14 @@ export class CustomEffect extends Effect {
         //
         ["screen", new Uniform(fbo.texture)],
         ["time", timer],
+        ["time2", timer2],
         ["intensity", intensity],
         ["progress", progress],
         ["dudvImage", dudvImage],
         ["water", water],
         ["amount", amount],
         ["speed", speed],
+        ["speed2", speed2],
         ["amount2", amount2],
         ["intensity2", intensity2],
       ]),
@@ -146,6 +152,7 @@ function GUISetup() {
     intensity: intensity.value,
     amount: amount.value,
 
+    speed2: speed2.value,
     intensity2: intensity2.value,
     amount2: amount2.value,
   });
@@ -154,14 +161,17 @@ function GUISetup() {
 
   dudvImage.value = texture;
 
-  intensity.value = ctrl.intensity;
+  //
   water.value = ctrl.water;
+
+  intensity.value = ctrl.intensity;
   amount.value = ctrl.amount;
   speed.value = ctrl.speed;
 
   //
   intensity2.value = ctrl.intensity2;
   amount2.value = ctrl.amount2;
+  speed2.value = ctrl.speed2;
 
   return null;
 }
