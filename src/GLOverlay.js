@@ -52,6 +52,12 @@ float offset(float blocks, vec2 uv) {
   return rand(vec2(shaderTime, round(uv.y * blocks)));
 }
 
+
+float offset2(float blocks, vec2 uv) {
+  float shaderTime = time2 * RATE;
+  return rand(vec2(shaderTime, round(uv.y * blocks)));
+}
+
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
   vec2 screenSize = resolution.xy;
 
@@ -65,9 +71,9 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   vec2 uv3g = amount * vec2(offset(intensity, uv) * 0.02 * 0.167, 0.0);
   vec2 uv3b = amount * vec2(offset(intensity, uv) * 0.03, -0.01);
 
-  vec2 uv4r = amount2 * vec2(offset(intensity2, uv) * 0.03, 0.01);
-  vec2 uv4g = amount2 * vec2(offset(intensity2, uv) * 0.02 * 0.167, 0.0);
-  vec2 uv4b = amount2 * vec2(offset(intensity2, uv) * 0.03, -0.01);
+  vec2 uv4r = amount2 * vec2(offset2(intensity2, uv) * 0.03, 0.01);
+  vec2 uv4g = amount2 * vec2(offset2(intensity2, uv) * 0.02 * 0.167, 0.0);
+  vec2 uv4b = amount2 * vec2(offset2(intensity2, uv) * 0.03, -0.01);
 
   outputColor.r = mix(texture(inputBuffer, uv2 + uv + uv3r).r, texture(inputBuffer, uv2 + uv + uv4r).r, 0.5);
   outputColor.g = mix(texture(inputBuffer, uv2 + uv + uv3g).g, texture(inputBuffer, uv2 + uv + uv4g).g, 0.5);
