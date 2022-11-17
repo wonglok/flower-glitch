@@ -9,7 +9,7 @@ const timer = new Uniform(0);
 const intensity = new Uniform(23);
 const water = new Uniform(0);
 const amount = new Uniform(1);
-const speed = new Uniform(1 / 500);
+const speed = new Uniform(1 / 10);
 const image = new Uniform(null);
 
 setInterval(() => {
@@ -49,9 +49,14 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   vec2 uv2 = dudv.xz * water / 10.0;
   outputColor = texture(inputBuffer, uv);
 
-  outputColor.r = texture(inputBuffer, uv2 + uv + amount * vec2(offset(intensity, uv) * 0.03, 0.001)).r;
-  outputColor.g = texture(inputBuffer, uv2 + uv + amount * vec2(offset(intensity, uv) * 0.02 * 0.167, 0.0)).g;
-  outputColor.b = texture(inputBuffer, uv2 + uv + amount * vec2(offset(intensity, uv) * 0.03, -0.001)).b;
+
+  vec2 uv3r = amount * vec2(offset(intensity, uv) * 0.03, 0.001);
+  vec2 uv3g = amount * vec2(offset(intensity, uv) * 0.02 * 0.167, 0.0);
+  vec2 uv3b = amount * vec2(offset(intensity, uv) * 0.03, -0.001);
+
+  outputColor.r = texture(inputBuffer, uv2 + uv + uv3r).r;
+  outputColor.g = texture(inputBuffer, uv2 + uv + uv3g).g;
+  outputColor.b = texture(inputBuffer, uv2 + uv + uv3b).b;
 
 
   // vec2 ypp = 0.1 * vec2( sin( vUv.y  * intensity ), cos( vUv.y  * intensity ) );
