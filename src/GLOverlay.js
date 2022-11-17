@@ -6,11 +6,16 @@ import { useControls } from "leva";
 import { useTexture } from "@react-three/drei";
 const progress = new Uniform(0);
 const timer = new Uniform(0);
-const intensity = new Uniform(23);
 const water = new Uniform(0);
-const amount = new Uniform(1);
-const speed = new Uniform(1 / 10);
 const dudvImage = new Uniform(null);
+
+const speed = new Uniform(1 / 10);
+
+const amount = new Uniform(0.5);
+const intensity = new Uniform(23);
+
+const amount2 = new Uniform(0.5);
+const intensity2 = new Uniform(1000);
 
 setInterval(() => {
   progress.value += 1 / 500;
@@ -27,8 +32,10 @@ uniform sampler2D screen;
 uniform float progress;
 uniform float time;
 uniform float intensity;
-uniform float water;
 uniform float amount;
+uniform float intensity2;
+uniform float amount2;
+uniform float water;
 uniform sampler2D dudvImage;
 #define RATE 0.0015
 
@@ -47,16 +54,21 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   vec4 dudv = texture2D(dudvImage, uv);
 
   vec2 uv2 = dudv.xz * water / 10.0;
+
   outputColor = texture(inputBuffer, uv);
 
-
-  vec2 uv3r = amount * vec2(offset(intensity, uv) * 0.03, 0.001);
+  vec2 uv3r = amount * vec2(offset(intensity, uv) * 0.03, 0.01);
   vec2 uv3g = amount * vec2(offset(intensity, uv) * 0.02 * 0.167, 0.0);
-  vec2 uv3b = amount * vec2(offset(intensity, uv) * 0.03, -0.001);
+  vec2 uv3b = amount * vec2(offset(intensity, uv) * 0.03, -0.01);
 
-  outputColor.r = texture(inputBuffer, uv2 + uv + uv3r).r;
-  outputColor.g = texture(inputBuffer, uv2 + uv + uv3g).g;
-  outputColor.b = texture(inputBuffer, uv2 + uv + uv3b).b;
+
+  vec2 uv4r = amount2 * vec2(offset(intensity2, uv) * 0.03, 0.01);
+  vec2 uv4g = amount2 * vec2(offset(intensity2, uv) * 0.02 * 0.167, 0.0);
+  vec2 uv4b = amount2 * vec2(offset(intensity2, uv) * 0.03, -0.01);
+
+  outputColor.r = mix(texture(inputBuffer, uv2 + uv + uv3r).r, texture(inputBuffer, uv2 + uv + uv4r).r, 0.5);
+  outputColor.g = mix(texture(inputBuffer, uv2 + uv + uv3g).g, texture(inputBuffer, uv2 + uv + uv4g).g, 0.5);
+  outputColor.b = mix(texture(inputBuffer, uv2 + uv + uv3b).b, texture(inputBuffer, uv2 + uv + uv4b).b, 0.5);
 
 
   // vec2 ypp = 0.1 * vec2( sin( vUv.y  * intensity ), cos( vUv.y  * intensity ) );
@@ -106,6 +118,8 @@ export class CustomEffect extends Effect {
         ["water", water],
         ["amount", amount],
         ["speed", speed],
+        ["amount2", amount2],
+        ["intensity2", intensity2],
       ]),
     });
   }
@@ -125,10 +139,15 @@ export const GLOverlay = forwardRef(function EffectFunc({ fbo }, ref) {
 
 function GUISetup() {
   let ctrl = useControls({
-    intensity: intensity.value,
     water: water.value,
-    amount: amount.value,
     speed: speed.value,
+
+    //
+    intensity: intensity.value,
+    amount: amount.value,
+
+    intensity2: intensity2.value,
+    amount2: amount2.value,
   });
 
   let texture = useTexture(`/dudv/water.jpg`);
@@ -139,7 +158,13 @@ function GUISetup() {
   water.value = ctrl.water;
   amount.value = ctrl.amount;
   speed.value = ctrl.speed;
+
+  //
+  intensity2.value = ctrl.intensity2;
+  amount2.value = ctrl.amount2;
+
   return null;
 }
 
 //
+// {"":251}
