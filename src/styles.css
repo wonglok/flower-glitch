@@ -62,13 +62,13 @@ body {
   position: relative;
   width: 200px;
   height: 2px;
-  background-image: url("../public/img/line_gold.png");
+  background-image: url("/img/line_gold.png");
   background-size: 100%;
   margin-top: 2px;
 }
 
 .line-item:nth-child(even) {
-  background-image: url("../public/img/line_red.png");
+  background-image: url("/img/line_red.png");
 }
 
 .line-item:last-child {
