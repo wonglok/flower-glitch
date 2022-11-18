@@ -5,7 +5,8 @@
 
 html,
 body,
-#root {
+#root,
+.full {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -13,7 +14,71 @@ body,
 }
 
 body {
-  background: #000000;
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+//-----
+
+#random-btn {
+  margin-top: 16px;
+}
+.flower-container {
+  width: 500px;
+  height: 700px;
+  background-color: #c11f3d;
+  background-image: url("../public/img/base_flower.png");
+  background-size: 85%;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
+}
+
+.gline-container {
+  position: absolute;
+}
+
+.right-gl {
+  right: 0;
+}
+
+.left-gl {
+  left: 0;
+}
+
+.top-gl {
+  top: 80px;
+}
+
+.bottom-gl {
+  bottom: 80px;
+}
+
+.gline-container > .line-item {
+  position: relative;
+  width: 200px;
+  height: 2px;
+  background-image: url("../public/img/line_gold.png");
+  background-size: 100%;
+  margin-top: 2px;
+}
+
+.line-item:nth-child(even) {
+  background-image: url("../public/img/line_red.png");
+}
+
+.line-item:last-child {
+  margin-bottom: 2px;
+}
+
+.gline-container.left-gl > .line-item {
+  left: -100px;
+}
+
+.gline-container.right-gl > .line-item {
+  right: -100px;
 }

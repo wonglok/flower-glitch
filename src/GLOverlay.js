@@ -149,7 +149,7 @@ export const GLOverlay = forwardRef(function EffectFunc({ fbo }, ref) {
 });
 
 function GUISetup() {
-  let ctrl = useControls({
+  let ctrl = useControls("PostProcessing", {
     water: water.value,
     speed: speed.value,
 
