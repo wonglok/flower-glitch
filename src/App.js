@@ -88,7 +88,7 @@ const OurScene = () => {
   };
 
   let { doRandomize } = useControls("Randomize", {
-    doRandomize: true,
+    doRandomize: false,
   });
 
   useEffect(() => {
