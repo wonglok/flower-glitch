@@ -13,6 +13,7 @@ import {
 import "./styles.css";
 import { Bloom, EffectComposer, SSR } from "@react-three/postprocessing";
 import {
+  alwaysOn,
   amount,
   amount2,
   delayFreq1,
@@ -108,37 +109,95 @@ const OurScene = () => {
     }
   }, [doRandomize]);
 
-  let { pulse } = useControls("Pulse", {
+  let pulseCtrl = useControls("Pulse", {
     pulse: false,
+    alwaysOn: false,
+    onFrequency: 1,
+    onAmount: 0.5,
   });
 
   useEffect(() => {
     //
+    alwaysOn.value = pulseCtrl.alwaysOn;
 
-    let cleans = [];
+    gsap.killTweensOf();
+    if (alwaysOn.value) {
+      return;
+    }
     try {
       delayFreq1.value = 0;
       delayFreq2.value = 0;
       amount.value = 0;
       amount2.value = 0;
 
-      gsap.to([delayFreq1], { value: 1, duration: 0.25 });
-      gsap.to([delayFreq2], { value: 1, duration: 0.25 });
-      gsap.to([amount], { value: 0.5, duration: 0.25 });
-      gsap.to([amount2], { value: 0.5, duration: 0.25 });
+      gsap.to([delayFreq1], {
+        value: pulseCtrl.onFrequency,
+        delay: 0,
+        duration: 0.25,
+      });
+      gsap.to([delayFreq2], {
+        value: pulseCtrl.onFrequency,
+        delay: 0,
+        duration: 0.25,
+      });
+      gsap.to([amount], {
+        value: pulseCtrl.onAmount,
+        delay: 0,
+        duration: 0.25,
+      });
+      gsap.to([amount2], {
+        value: pulseCtrl.onAmount,
+        delay: 0,
+        duration: 0.25,
+      });
 
-      gsap.to([delayFreq1], { value: 0, duration: 0.25, delay: 0.25 + 1 });
-      gsap.to([delayFreq2], { value: 0, duration: 0.25, delay: 0.25 + 1 });
-      gsap.to([amount], { value: 0, duration: 0.25, delay: 0.25 + 1 });
-      gsap.to([amount2], { value: 0, duration: 0.25, delay: 0.25 + 1 });
+      gsap.to([delayFreq1], {
+        value: pulseCtrl.onFrequency,
+        delay: 0.0 + 0.25,
+        duration: 0.5,
+      });
+      gsap.to([delayFreq2], {
+        value: pulseCtrl.onFrequency,
+        delay: 0.0 + 0.25,
+        duration: 0.5,
+      });
+      gsap.to([amount], {
+        value: pulseCtrl.onAmount,
+        delay: 0.0 + 0.25,
+        duration: 0.5,
+      });
+      gsap.to([amount2], {
+        value: pulseCtrl.onAmount,
+        delay: 0.0 + 0.25,
+        duration: 0.5,
+      });
+
+      gsap.to([delayFreq1], {
+        value: 0,
+        delay: 0.0 + 0.25 + 0.5 + 1,
+        duration: 0.5,
+      });
+      gsap.to([delayFreq2], {
+        value: 0,
+        delay: 0.0 + 0.25 + 0.5 + 1,
+        duration: 0.5,
+      });
+      gsap.to([amount], {
+        value: 0,
+        delay: 0.0 + 0.25 + 0.5 + 1,
+        duration: 0.5,
+      });
+      gsap.to([amount2], {
+        value: 0,
+        delay: 0.0 + 0.25 + 0.5 + 1,
+        duration: 0.5,
+      });
     } catch (e) {
       console.log(e);
     }
 
-    return () => {
-      cleans.forEach(clearTimeout);
-    };
-  }, [pulse]);
+    return () => {};
+  }, [pulseCtrl]);
 
   useEffect(() => {
     window.addEventListener("run", onClick);

@@ -22,6 +22,8 @@ const intensity2 = new Uniform(1000);
 export const delayFreq1 = new Uniform(1);
 export const delayFreq2 = new Uniform(1);
 
+export const alwaysOn = new Uniform(false);
+
 setInterval(() => {
   progress.value += 1 / 500;
   if (progress.value >= 1) {
@@ -46,6 +48,7 @@ uniform float water;
 uniform sampler2D dudvImage;
 uniform float delayFreq1;
 uniform float delayFreq2;
+uniform bool alwaysOn;
 #define RATE 0.0015
 
 float rand(vec2 co){
@@ -54,12 +57,18 @@ float rand(vec2 co){
 
 float offset(float blocks, vec2 uv) {
   float shaderTime = time * RATE * (delayFreq1);
+  if (alwaysOn) {
+    shaderTime = time * RATE;
+  }
   return rand(vec2(shaderTime, round(uv.y * blocks)));
 }
 
 
 float offset2(float blocks, vec2 uv) {
   float shaderTime = time2 * RATE * (delayFreq2);
+  if (alwaysOn) {
+    shaderTime = time2 * RATE;
+  }
   return rand(vec2(shaderTime, round(uv.y * blocks)));
 }
 
@@ -140,6 +149,7 @@ export class CustomEffect extends Effect {
         ["intensity2", intensity2],
         ["delayFreq1", delayFreq1],
         ["delayFreq2", delayFreq2],
+        ["alwaysOn", alwaysOn],
       ]),
     });
   }
