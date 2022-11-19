@@ -121,23 +121,16 @@ const OurScene = () => {
       delayFreq2.value = 0;
       amount.value = 0;
       amount2.value = 0;
-      cleans.push(
-        setTimeout(() => {
-          gsap.to([delayFreq1], { value: 1, duration: 0.25 });
-          gsap.to([delayFreq2], { value: 1, duration: 0.25 });
-          gsap.to([amount], { value: 0.5, duration: 0.25 });
-          gsap.to([amount2], { value: 0.5, duration: 0.25 });
 
-          cleans.push(
-            setTimeout(() => {
-              gsap.to([delayFreq1], { value: 0, duration: 0.25 });
-              gsap.to([delayFreq2], { value: 0, duration: 0.25 });
-              gsap.to([amount], { value: 0, duration: 0.25 });
-              gsap.to([amount2], { value: 0, duration: 0.25 });
-            }, 1000 + 250)
-          );
-        }, 500 + 250)
-      );
+      gsap.to([delayFreq1], { value: 1, duration: 0.25 });
+      gsap.to([delayFreq2], { value: 1, duration: 0.25 });
+      gsap.to([amount], { value: 0.5, duration: 0.25 });
+      gsap.to([amount2], { value: 0.5, duration: 0.25 });
+
+      gsap.to([delayFreq1], { value: 0, duration: 0.25, delay: 0.25 + 1 });
+      gsap.to([delayFreq2], { value: 0, duration: 0.25, delay: 0.25 + 1 });
+      gsap.to([amount], { value: 0, duration: 0.25, delay: 0.25 + 1 });
+      gsap.to([amount2], { value: 0, duration: 0.25, delay: 0.25 + 1 });
     } catch (e) {
       console.log(e);
     }
