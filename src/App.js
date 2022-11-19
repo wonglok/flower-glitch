@@ -12,11 +12,18 @@ import {
 } from "@react-three/drei";
 import "./styles.css";
 import { Bloom, EffectComposer, SSR } from "@react-three/postprocessing";
-import { GLOverlay } from "./GLOverlay";
+import {
+  amount,
+  amount2,
+  delayFreq1,
+  delayFreq2,
+  GLOverlay,
+} from "./GLOverlay";
 import { FlowerHTML } from "./FlowerHTML";
 import html2canvas from "html2canvas";
 import { CanvasTexture, DoubleSide, PlaneGeometry, sRGBEncoding } from "three";
 import { useControls } from "leva";
+import useSWR from "swr";
 
 const OurScene = () => {
   let fbo = useFBO(512, 512);
@@ -93,8 +100,59 @@ const OurScene = () => {
 
   useEffect(() => {
     //
-    onClick();
+    try {
+      onClick();
+    } catch (e) {
+      console.log(e);
+    }
   }, [doRandomize]);
+
+  let { pulse } = useControls("Pulse", {
+    pulse: false,
+  });
+
+  useEffect(() => {
+    //
+
+    let cleans = [];
+    try {
+      delayFreq1.value = 0;
+      delayFreq2.value = 0;
+      amount.value = 0;
+      amount2.value = 0;
+      cleans.push(
+        setTimeout(() => {
+          delayFreq1.value = 1;
+          delayFreq2.value = 1;
+          amount.value = 0.5;
+          amount2.value = 0.5;
+
+          cleans.push(
+            setTimeout(() => {
+              delayFreq1.value = 0;
+              delayFreq2.value = 0;
+              amount.value = 0;
+              amount2.value = 0;
+            }, 1000)
+          );
+        }, 500)
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
+    return () => {
+      cleans.forEach(clearTimeout);
+    };
+  }, [pulse]);
+
+  useEffect(() => {
+    window.addEventListener("run", onClick);
+
+    return () => {
+      window.removeEventListener("run", onClick);
+    };
+  }, []);
 
   return (
     <group ref={grp}>
@@ -120,6 +178,9 @@ const OurScene = () => {
 };
 
 export default function App() {
+  let { data: html } = useSWR(`/flower.html`, (url) => {
+    return fetch(url).then((r) => r.text());
+  });
   return (
     <div className="full">
       <Canvas gl={{ preserveDrawingBuffer: true }}>
@@ -128,9 +189,20 @@ export default function App() {
         <OurScene />
         <OrbitControls></OrbitControls>
       </Canvas>
-      <div>
+      <textarea
+        className="tata"
+        defaultValue={html}
+        onInput={(ev) => {
+          document.querySelector("#htmldrain").innerHTML = ev.target.value;
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("run"));
+          });
+        }}
+      ></textarea>
+      <div id="htmldrain" dangerouslySetInnerHTML={{ __html: html }}></div>
+      {/* <div className="full">
         <FlowerHTML></FlowerHTML>
-      </div>
+      </div> */}
     </div>
   );
 }

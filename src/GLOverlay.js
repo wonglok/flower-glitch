@@ -13,11 +13,14 @@ const dudvImage = new Uniform(null);
 const speed = new Uniform(1 / 10);
 const speed2 = new Uniform(1 / 10);
 
-const amount = new Uniform(0.5);
+export const amount = new Uniform(0.5);
 const intensity = new Uniform(23);
 
-const amount2 = new Uniform(0.5);
+export const amount2 = new Uniform(0.5);
 const intensity2 = new Uniform(1000);
+
+export const delayFreq1 = new Uniform(1);
+export const delayFreq2 = new Uniform(1);
 
 setInterval(() => {
   progress.value += 1 / 500;
@@ -41,6 +44,8 @@ uniform float intensity2;
 uniform float amount2;
 uniform float water;
 uniform sampler2D dudvImage;
+uniform float delayFreq1;
+uniform float delayFreq2;
 #define RATE 0.0015
 
 float rand(vec2 co){
@@ -48,13 +53,13 @@ float rand(vec2 co){
 }
 
 float offset(float blocks, vec2 uv) {
-  float shaderTime = time * RATE;
+  float shaderTime = time * RATE * (delayFreq1);
   return rand(vec2(shaderTime, round(uv.y * blocks)));
 }
 
 
 float offset2(float blocks, vec2 uv) {
-  float shaderTime = time2 * RATE;
+  float shaderTime = time2 * RATE * (delayFreq2);
   return rand(vec2(shaderTime, round(uv.y * blocks)));
 }
 
@@ -78,8 +83,10 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   outputColor.r = mix(texture(inputBuffer, uv2 + uv + uv3r).r, texture(inputBuffer, uv2 + uv + uv4r).r, 0.5);
   outputColor.g = mix(texture(inputBuffer, uv2 + uv + uv3g).g, texture(inputBuffer, uv2 + uv + uv4g).g, 0.5);
   outputColor.b = mix(texture(inputBuffer, uv2 + uv + uv3b).b, texture(inputBuffer, uv2 + uv + uv4b).b, 0.5);
+  //
 
-
+  //
+  //
   // vec2 ypp = 0.1 * vec2( sin( vUv.y  * intensity ), cos( vUv.y  * intensity ) );
   // float dX = vUv.x + ypp.x * 1.0;
   // float dY = vUv.y + ypp.y * 1.0;
@@ -131,6 +138,8 @@ export class CustomEffect extends Effect {
         ["speed2", speed2],
         ["amount2", amount2],
         ["intensity2", intensity2],
+        ["delayFreq1", delayFreq1],
+        ["delayFreq2", delayFreq2],
       ]),
     });
   }
