@@ -20,7 +20,7 @@ import {
   delayFreq2,
   GLOverlay,
 } from "./GLOverlay";
-import { FlowerHTML } from "./FlowerHTML";
+// import { FlowerHTML } from "./FlowerHTML";
 import html2canvas from "html2canvas";
 import { CanvasTexture, DoubleSide, PlaneGeometry, sRGBEncoding } from "three";
 import { useControls } from "leva";
