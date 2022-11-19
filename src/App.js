@@ -111,9 +111,12 @@ const OurScene = () => {
 
   let pulseCtrl = useControls("Pulse", {
     pulse: false,
+    onDuration: 0.5,
+    //
     alwaysOn: false,
     onFrequency: 1,
     onAmount: 0.5,
+    fadeDuration: 0.25,
   });
 
   useEffect(() => {
@@ -133,64 +136,80 @@ const OurScene = () => {
       gsap.to([delayFreq1], {
         value: pulseCtrl.onFrequency,
         delay: 0,
-        duration: 0.25,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([delayFreq2], {
         value: pulseCtrl.onFrequency,
         delay: 0,
-        duration: 0.25,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([amount], {
         value: pulseCtrl.onAmount,
         delay: 0,
-        duration: 0.25,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([amount2], {
         value: pulseCtrl.onAmount,
         delay: 0,
-        duration: 0.25,
+        duration: pulseCtrl.fadeDuration,
       });
 
       gsap.to([delayFreq1], {
         value: pulseCtrl.onFrequency,
-        delay: 0.0 + 0.25,
-        duration: 0.5,
+        delay: 0.0 + pulseCtrl.fadeDuration,
+        duration: pulseCtrl.onDuration,
       });
       gsap.to([delayFreq2], {
         value: pulseCtrl.onFrequency,
-        delay: 0.0 + 0.25,
-        duration: 0.5,
+        delay: 0.0 + pulseCtrl.fadeDuration,
+        duration: pulseCtrl.onDuration,
       });
       gsap.to([amount], {
         value: pulseCtrl.onAmount,
-        delay: 0.0 + 0.25,
-        duration: 0.5,
+        delay: 0.0 + pulseCtrl.fadeDuration,
+        duration: pulseCtrl.onDuration,
       });
       gsap.to([amount2], {
         value: pulseCtrl.onAmount,
-        delay: 0.0 + 0.25,
-        duration: 0.5,
+        delay: 0.0 + pulseCtrl.fadeDuration,
+        duration: pulseCtrl.onDuration,
       });
 
       gsap.to([delayFreq1], {
         value: 0,
-        delay: 0.0 + 0.25 + 0.5 + 1,
-        duration: 0.5,
+        delay:
+          0.0 +
+          pulseCtrl.fadeDuration +
+          pulseCtrl.onDuration +
+          pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([delayFreq2], {
         value: 0,
-        delay: 0.0 + 0.25 + 0.5 + 1,
-        duration: 0.5,
+        delay:
+          0.0 +
+          pulseCtrl.fadeDuration +
+          pulseCtrl.onDuration +
+          pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([amount], {
         value: 0,
-        delay: 0.0 + 0.25 + 0.5 + 1,
-        duration: 0.5,
+        delay:
+          0.0 +
+          pulseCtrl.fadeDuration +
+          pulseCtrl.onDuration +
+          pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration,
       });
       gsap.to([amount2], {
         value: 0,
-        delay: 0.0 + 0.25 + 0.5 + 1,
-        duration: 0.5,
+        delay:
+          0.0 +
+          pulseCtrl.fadeDuration +
+          pulseCtrl.onDuration +
+          pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration,
       });
     } catch (e) {
       console.log(e);
