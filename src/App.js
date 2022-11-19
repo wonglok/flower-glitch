@@ -110,10 +110,11 @@ const OurScene = () => {
   }, [doRandomize]);
 
   let pulseCtrl = useControls("Pulse", {
+    alwaysOn: false,
+
     pulse: false,
     onDuration: 0.5,
     //
-    alwaysOn: false,
     onFrequency: 1,
     onAmount: 0.5,
     fadeDuration: 0.25,
