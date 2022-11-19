@@ -24,6 +24,7 @@ import html2canvas from "html2canvas";
 import { CanvasTexture, DoubleSide, PlaneGeometry, sRGBEncoding } from "three";
 import { useControls } from "leva";
 import useSWR from "swr";
+import gsap from "gsap";
 
 const OurScene = () => {
   let fbo = useFBO(512, 512);
@@ -122,20 +123,20 @@ const OurScene = () => {
       amount2.value = 0;
       cleans.push(
         setTimeout(() => {
-          delayFreq1.value = 1;
-          delayFreq2.value = 1;
-          amount.value = 0.5;
-          amount2.value = 0.5;
+          gsap.to([delayFreq1], { value: 1, duration: 0.25 });
+          gsap.to([delayFreq2], { value: 1, duration: 0.25 });
+          gsap.to([amount], { value: 0.5, duration: 0.25 });
+          gsap.to([amount2], { value: 0.5, duration: 0.25 });
 
           cleans.push(
             setTimeout(() => {
-              delayFreq1.value = 0;
-              delayFreq2.value = 0;
-              amount.value = 0;
-              amount2.value = 0;
-            }, 1000)
+              gsap.to([delayFreq1], { value: 0, duration: 0.25 });
+              gsap.to([delayFreq2], { value: 0, duration: 0.25 });
+              gsap.to([amount], { value: 0, duration: 0.25 });
+              gsap.to([amount2], { value: 0, duration: 0.25 });
+            }, 1000 + 250)
           );
-        }, 500)
+        }, 500 + 250)
       );
     } catch (e) {
       console.log(e);
