@@ -216,7 +216,7 @@ const OurScene = () => {
       console.log(e);
     }
 
-    return () => { };
+    return () => {};
   }, [pulseCtrl]);
 
   useEffect(() => {
@@ -232,7 +232,7 @@ const OurScene = () => {
       {/*  */}
 
       <Plane
-        args={[5 / 2.5, 7 / 2.5, 1, 1]}
+        args={[6 / 2.5, 6 / 2.5, 1, 1]}
         ref={plane}
         rotation={[Math.PI * 0.0, 0, 0]}
       >
