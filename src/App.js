@@ -216,7 +216,7 @@ const OurScene = () => {
       console.log(e);
     }
 
-    return () => {};
+    return () => { };
   }, [pulseCtrl]);
 
   useEffect(() => {
@@ -260,7 +260,7 @@ export default function App() {
         {/* <Environment preset="apartment" background /> */}
         <color attach="background" args={["#C11F3E"]} />
         <OurScene />
-        <OrbitControls></OrbitControls>
+        {/* <OrbitControls></OrbitControls> */}
       </Canvas>
       <textarea
         className="tata"
