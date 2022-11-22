@@ -1,14 +1,42 @@
-import { GLApp } from "../threejs/threejs";
+import { LinearEncoding } from "three";
+import { sRGBEncoding } from "../threejs/build/three.module.js";
+import { CanvasTexture, TextureLoader } from "../threejs/build/three.module.js";
+import { VideoAPI } from "../threejs/VideoAPI.js";
 
 let clean = () => {};
-function work({ canvas }) {
-  console.log("work", canvas);
+function work({ refCanvas, refVideo }) {
+  console.log("work", refCanvas);
 
   clean();
-  let app = new GLApp({ refCanvas: canvas });
-  clean = () => {
-    app();
-  };
+
+  new Promise(async (resolve) => {
+    //
+
+    //frame
+
+    let importObjects = {
+      //
+      bg_red_jpg: await new TextureLoader()
+        .loadAsync(`/img/bg_red.jpg`)
+        .then((t) => {
+          t.encoding = sRGBEncoding;
+          return t;
+        }),
+      frame_png: await new TextureLoader().loadAsync(`/img/frame.png`),
+      ref_canvas: new CanvasTexture(refCanvas),
+      ref_video: refVideo,
+    };
+
+    importObjects.ref_canvas.encoding = LinearEncoding;
+    importObjects.ref_canvas.needsUpdate = true;
+
+    let app = new VideoAPI({ importObjects });
+    clean = () => {
+      app.clean();
+    };
+
+    resolve();
+  });
 }
 
 export { work };
