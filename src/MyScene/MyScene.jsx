@@ -1,8 +1,9 @@
-import { Box } from "@react-three/drei";
-import { createPortal } from "@react-three/fiber";
+import { Box, Environment, Plane, Sphere } from "@react-three/drei";
+import { createPortal, useThree } from "@react-three/fiber";
 import { EffectComposer } from "@react-three/postprocessing";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Scene } from "three";
+import { GLOverlay } from "../GLOverlay";
 
 export function MyScene() {
   let ref = useRef();
@@ -10,19 +11,34 @@ export function MyScene() {
     return new Scene();
   }, []);
 
+  let [fTex, setTex] = useState(null);
+
   useEffect(() => {
     console.log(ref.current);
+    ref.current.autoRenderToScreen = false;
+    console.log(ref?.current);
+    setTex(ref?.current?.outputBuffer?.texture);
   }, []);
+
+  let viewport = useThree((s) => s.viewport);
   return (
     <>
       {createPortal(
         <group>
+          <Environment preset="studio"></Environment>
           <Box></Box>
         </group>,
         glitchScene
       )}
 
-      <EffectComposer ref={ref} scene={glitchScene}></EffectComposer>
+      <Plane args={[viewport.width, viewport.height, 1, 1]}>
+        <meshBasicMaterial map={fTex}></meshBasicMaterial>
+      </Plane>
+
+      {/* <Sphere></Sphere> */}
+      <EffectComposer renderPriority={10} ref={ref} scene={glitchScene}>
+        <GLOverlay></GLOverlay>
+      </EffectComposer>
       {/* MyScene */}
     </>
   );

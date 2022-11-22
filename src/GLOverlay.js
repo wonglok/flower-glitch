@@ -36,7 +36,6 @@ setInterval(() => {
 
 const fragmentShader = /* glsl */ `
 
-uniform sampler2D screen;
 uniform float progress;
 uniform float time;
 uniform float time2;
@@ -135,7 +134,7 @@ export class CustomEffect extends Effect {
       blendFunction: BlendFunction.Normal,
       uniforms: new Map([
         //
-        ["screen", new Uniform(fbo.texture)],
+        // ["screen", new Uniform(fbo?.texture)],
         ["time", timer],
         ["time2", timer2],
         ["intensity", intensity],
@@ -156,8 +155,8 @@ export class CustomEffect extends Effect {
 }
 
 // Effect component
-export const GLOverlay = forwardRef(function EffectFunc({ fbo }, ref) {
-  const effect = useMemo(() => new CustomEffect({ fbo }), [fbo]);
+export const GLOverlay = forwardRef(function EffectFunc({}, ref) {
+  const effect = useMemo(() => new CustomEffect({}), []);
 
   return (
     <>

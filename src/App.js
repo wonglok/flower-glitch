@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { MyScene } from "./MyScene/MyScene";
+import "./styles.css";
 
 export default function App() {
   return (
