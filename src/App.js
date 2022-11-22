@@ -244,7 +244,9 @@ const OurScene = () => {
       </Plane>
 
       {/* <OrbitControls /> */}
+
       {/* <Environment preset="night" /> */}
+
       <EffectComposer>
         {/* <Bloom luminanceThreshold={0.9} mipmapBlur /> */}
         {/* <SSR /> */}
