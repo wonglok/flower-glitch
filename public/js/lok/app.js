@@ -1,9 +1,18 @@
+import { GLApp } from "../threejs/threejs";
+
+let clean = () => {};
 function work({ canvas }) {
   console.log("work", canvas);
-  /*
-  width: 650px;
-  height: 780px;
-  */
+
+  clean();
+  let app = new GLApp({ refCanvas: canvas });
+  clean = () => {
+    app();
+  };
 }
 
 export { work };
+/*
+  width: 650px;
+  height: 780px;
+  */
