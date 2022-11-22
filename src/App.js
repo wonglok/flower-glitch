@@ -258,7 +258,7 @@ export default function App() {
     <div className="full">
       <Canvas gl={{ preserveDrawingBuffer: true }}>
         {/* <Environment preset="apartment" background /> */}
-        <color attach="background" args={["#C11F3E"]} />
+        <color attach="background" args={["#fff"]} />
         <OurScene />
         {/* <OrbitControls></OrbitControls> */}
       </Canvas>
