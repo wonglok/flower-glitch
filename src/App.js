@@ -137,42 +137,42 @@ const OurScene = () => {
       gsap.to([delayFreq1], {
         value: pulseCtrl.onFrequency,
         delay: 0,
-        duration: pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration * 0.0,
       });
       gsap.to([delayFreq2], {
         value: pulseCtrl.onFrequency,
         delay: 0,
-        duration: pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration * 0.0,
       });
       gsap.to([amount], {
         value: pulseCtrl.onAmount,
         delay: 0,
-        duration: pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration * 0.0,
       });
       gsap.to([amount2], {
         value: pulseCtrl.onAmount,
         delay: 0,
-        duration: pulseCtrl.fadeDuration,
+        duration: pulseCtrl.fadeDuration * 0.0,
       });
 
       gsap.to([delayFreq1], {
         value: pulseCtrl.onFrequency,
-        delay: 0.0 + pulseCtrl.fadeDuration,
+        delay: 0.0 + pulseCtrl.fadeDuration * 0.0,
         duration: pulseCtrl.onDuration,
       });
       gsap.to([delayFreq2], {
         value: pulseCtrl.onFrequency,
-        delay: 0.0 + pulseCtrl.fadeDuration,
+        delay: 0.0 + pulseCtrl.fadeDuration * 0.0,
         duration: pulseCtrl.onDuration,
       });
       gsap.to([amount], {
         value: pulseCtrl.onAmount,
-        delay: 0.0 + pulseCtrl.fadeDuration,
+        delay: 0.0 + pulseCtrl.fadeDuration * 0.0,
         duration: pulseCtrl.onDuration,
       });
       gsap.to([amount2], {
         value: pulseCtrl.onAmount,
-        delay: 0.0 + pulseCtrl.fadeDuration,
+        delay: 0.0 + pulseCtrl.fadeDuration * 0.0,
         duration: pulseCtrl.onDuration,
       });
 
@@ -180,7 +180,7 @@ const OurScene = () => {
         value: 0,
         delay:
           0.0 +
-          pulseCtrl.fadeDuration +
+          pulseCtrl.fadeDuration * 0.0 +
           pulseCtrl.onDuration +
           pulseCtrl.fadeDuration,
         duration: pulseCtrl.fadeDuration,
@@ -189,7 +189,7 @@ const OurScene = () => {
         value: 0,
         delay:
           0.0 +
-          pulseCtrl.fadeDuration +
+          pulseCtrl.fadeDuration * 0.0 +
           pulseCtrl.onDuration +
           pulseCtrl.fadeDuration,
         duration: pulseCtrl.fadeDuration,
@@ -198,7 +198,7 @@ const OurScene = () => {
         value: 0,
         delay:
           0.0 +
-          pulseCtrl.fadeDuration +
+          pulseCtrl.fadeDuration * 0.0 +
           pulseCtrl.onDuration +
           pulseCtrl.fadeDuration,
         duration: pulseCtrl.fadeDuration,
@@ -207,7 +207,7 @@ const OurScene = () => {
         value: 0,
         delay:
           0.0 +
-          pulseCtrl.fadeDuration +
+          pulseCtrl.fadeDuration * 0.0 +
           pulseCtrl.onDuration +
           pulseCtrl.fadeDuration,
         duration: pulseCtrl.fadeDuration,
