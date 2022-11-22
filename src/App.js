@@ -8,7 +8,7 @@ export default function App() {
       <Canvas className="full" gl={{ alpha: true }}>
         <MyScene></MyScene>
         {/* <Environment preset="apartment" background /> */}
-        <color attach="background" args={["#fff"]} />
+        {/* <color attach="background" args={["#fff"]} /> */}
         {/* <OrbitControls></OrbitControls> */}
       </Canvas>
     </div>
