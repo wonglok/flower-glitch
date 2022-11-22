@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <h1>Canvas tester</h1>
+    <p>
+      <strong>x offset range</strong>:-185 <-> 465 <br />
+      <strong>line width</strong>: 111px <-> 370px
+    </p>
+    <div class="preview-container">
+      <div class="video-container">
+        <canvas id="generative-canvas" width="650" height="780"> </canvas>
+        <div class="frame-container"></div>
+      </div>
+      <div class="control-panel">
+        <div class="">
+          <div>
+            <label for="flower">Product type</label>
+            <select name="flower" id="flower-select">
+              <option selected value="flower1">Flower 1</option>
+              <option value="flower2">Flower 2</option>
+              <option value="flower3">Flower 3</option>
+            </select>
+          </div>
+          <div>
+            <!-- <label for="color-select">Color Selection</label> -->
+            <select
+              name="color-select"
+              id="color-select"
+              multiple
+              size="3"
+              disabled
+            >
+              <option value="gold1">Gold 1</option>
+              <option value="orange1">Orange 1</option>
+              <option value="blue1">Blue 1</option>
+              <option value="pink1">Pink 1</option>
+              <option value="red1">Red 1</option>
+              <option value="gold2">Gold 2</option>
+              <option value="orange2">Orange 2</option>
+              <option value="blue2">Blue 2</option>
+              <option value="pink2">Pink 2</option>
+              <option value="red2">Red 2</option>
+            </select>
+          </div>
+        </div>
+        <label for="glitch-pert" id="gpsliderlabel"
+          >Glitch % (lower -> lessr the lines): 0.3</label
+        >
+        <input
+          type="range"
+          id="glitch-pert"
+          name="glitch-pert"
+          value="0.3"
+          min="0"
+          max="1"
+          step="0.1"
+        />
+        <div class="btn-set">
+          <button onclick="randomize()">Random</button>
+          <button onclick="intitalMap()">Inital map</button>
+          <button onclick="extrmeMap()">Extreme map (position)</button>
+          <button onclick="extrmeWidthMap()">Extreme map (width)</button>
+        </div>
+        <button onclick="generateGlitchedVideo()" style="width: 100%">
+          Generate Glitch video
+        </button>
+
+        <textarea id="data-preview" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="video-player">
+      <video src="" loop autoplay muted title="video"></video>
+    </div>
+    <button onclick="" disabled>Download</button>
+  </body>
+  <style>
+    h1 {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .video-container,
+    .video-player {
+      position: relative;
+      width: 650px;
+      height: 780px;
+      background-color: #670009;
+      margin-bottom: 32px;
+    }
+
+    .preview-container {
+      display: flex;
+      gap: 16px;
+    }
+    .control-panel {
+      max-width: 35vw;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-player {
+      margin-top: 32px;
+      background-color: grey;
+    }
+
+    #generative-canvas {
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #color-select {
+      height: 180px;
+    }
+
+    #data-preview {
+      width: 100%;
+      height: 250px;
+    }
+
+    .frame-container {
+      position: absolute;
+      top: 0;
+      width: 650px;
+      height: 780px;
+      background-image: url("/img/frame.png");
+    }
+
+    .btn-set {
+      margin: 16px;
+      display: flex;
+      gap: 16px;
+    }
+
+    select,
+    button {
+      height: 40px;
+      width: 100px;
+      margin-bottom: 32px;
+    }
+  </style>
+  <script type="text/javascript">
+    const f1Base = new Image();
+    const f2Base = new Image();
+    const f3Base = new Image();
+    const redLine = new Image();
+    const goldLine = new Image();
+
+    f1Base.src = "/img/base_flower_11.png";
+    f2Base.src = "/img/base_flower_12.png";
+    f3Base.src = "/img/base_flower_13.png";
+    redLine.src = "/img/line_red.png";
+    goldLine.src = "/img/line_gold.png";
+
+    var previewingFlower = "flower1";
+    var glitchPert = 0.3;
+    var randomerlizer = [];
+
+    var canvas = document.getElementById("generative-canvas");
+    var ctx = canvas.getContext("2d");
+
+    // ctx.beginPath();
+    // ctx.rect(0, 0, 650, 780);
+
+    // ctx.fillStyle = "#670009";
+    // ctx.fill();
+
+    // Event listeners
+    f1Base.onload = function () {
+      drawFlowerImg(previewingFlower);
+      // ctx.drawImage(f1Base, 0, 0, 650, 780);
+    };
+
+    const flowerSelector = document.querySelector("#flower-select");
+    const glitchPerSlider = document.querySelector("#glitch-pert");
+    const colorSelector = document.querySelector("#color-select");
+    const datPreview = document.querySelector("#data-preview");
+
+    flowerSelector.addEventListener("change", (event) => {
+      previewingFlower = event.target.value;
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      randomize();
+    });
+
+    glitchPerSlider.addEventListener("change", (event) => {
+      glitchPert = event.target.value;
+
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      randomize();
+    });
+
+    colorSelector.addEventListener("change", (event) => {
+      // console.log(event.target.);
+    });
+
+    // Functions
+
+    function lineRandomDrawer(x, y, w) {
+      let isRed = Math.random() < 0.5;
+      if (isRed) {
+        randomerlizer.push({ x: x, y: y, width: w, color: "red" });
+        ctx.drawImage(redLine, x, y, w, 2);
+      } else {
+        randomerlizer.push({ x: x, y: y, width: w, color: "gold" });
+        ctx.drawImage(goldLine, x, y, w, 2);
+      }
+    }
+
+    function drawFlowerImg(flowerId) {
+      switch (flowerId) {
+        case "flower1":
+          ctx.drawImage(f1Base, 0, 0, 650, 780);
+          break;
+        case "flower2":
+          ctx.drawImage(f2Base, 0, 0, 650, 780);
+          break;
+        case "flower3":
+          ctx.drawImage(f3Base, 0, 0, 650, 780);
+          break;
+        default:
+          break;
+      }
+    }
+
+    function resetCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      randomerlizer = [];
+    }
+
+    function randomize() {
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      for (let i = 140; i < 560; i += 7) {
+        let isShow = Math.random() < glitchPert;
+        if (isShow) {
+          let _xOffset = Math.floor(Math.random() * (465 - -185) - 185);
+          let _width = Math.floor(370 * (Math.random() * 0.5 + 0.3));
+          lineRandomDrawer(_xOffset, i, _width);
+        }
+      }
+      console.log(randomerlizer);
+      let previewStr = "";
+      randomerlizer.forEach((data, index) => {
+        previewStr += `#${index + 1} ${JSON.stringify(data)}\n`;
+      });
+      document.getElementById("data-preview").innerHTML = previewStr;
+      document.getElementById(
+        "gpsliderlabel"
+      ).innerHTML = `Glitch % (lower -> lessr the lines): <strong>${glitchPert}</strong><br/> Total generated lines: <strong>${randomerlizer.length}</strong>`;
+    }
+
+    function intitalMap() {
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      for (let i = 140; i < 560; i += 7) {
+        lineRandomDrawer(0, i, 370);
+      }
+    }
+    function extrmeMap() {
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      for (let i = 140; i < 560; i += 7) {
+        let isShow = Math.random() < 0.5;
+        if (isShow) {
+          let _xOffset = -185;
+          let _width = 370;
+          lineRandomDrawer(_xOffset, i, _width);
+        } else {
+          let _xOffset = 465;
+          let _width = 370;
+          lineRandomDrawer(_xOffset, i, _width);
+        }
+      }
+    }
+    function extrmeWidthMap() {
+      resetCanvas();
+      drawFlowerImg(previewingFlower);
+      for (let i = 140; i < 560; i += 7) {
+        let isShow = Math.random() < 0.5;
+        if (isShow) {
+          let _width = 111;
+          lineRandomDrawer(140, i, _width);
+        } else {
+          let _width = 370;
+          lineRandomDrawer(140, i, _width);
+        }
+      }
+    }
+
+    function generateGlitchedVideo(effectParams) {
+      // Lok Lok please let me know how should I pass the params for you🙏🏻
+
+      import("./js/lok/app.js").then((api) => {
+        api.work({
+          canvas: ctx.canvas,
+        });
+      });
+    }
+  </script>
+</html>

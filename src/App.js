@@ -262,11 +262,10 @@ export default function App() {
   });
   return (
     <div className="full">
-      <Canvas gl={{ preserveDrawingBuffer: true }}>
-        {/* <Environment preset="apartment" background /> */}
+      <a href="/encoder.html">Encoder</a>
+      {/* <Canvas gl={{ preserveDrawingBuffer: true }}>
         <color attach="background" args={["#fff"]} />
         <OurScene />
-        {/* <OrbitControls></OrbitControls> */}
       </Canvas>
       <textarea
         className="tata"
@@ -278,7 +277,7 @@ export default function App() {
           });
         }}
       ></textarea>
-      <div id="htmldrain" dangerouslySetInnerHTML={{ __html: html }}></div>
+      <div id="htmldrain" dangerouslySetInnerHTML={{ __html: html }}></div> */}
       {/* <div className="full">
         <FlowerHTML></FlowerHTML>
       </div> */}
