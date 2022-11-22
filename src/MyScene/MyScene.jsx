@@ -1,6 +1,7 @@
 import {
   Box,
   Environment,
+  Html,
   OrbitControls,
   Plane,
   useEnvironment,
@@ -56,6 +57,16 @@ export function MyScene() {
   //
   return (
     <group>
+      <Html position={[2, 0, 0]} transform>
+        <button
+          onClick={() => {
+            //
+            vAPI.record();
+          }}
+        >
+          Click
+        </button>
+      </Html>
       <Environment preset="apartment" background></Environment>
       {vAPI && (
         <>
@@ -91,11 +102,6 @@ class VideoAPI {
     });
 
     this.masterIntensity = { value: 1 };
-
-    this.record = async () => {
-      //
-      // const HME = await import("h264-mp4-encoder").then((e) => e.default);
-    };
 
     this.uniforms0 = {
       masterIntensity: this.masterIntensity,
@@ -249,6 +255,29 @@ class VideoAPI {
       // this.fsQuad.render(mgl);
       mgl.setRenderTarget(null);
     });
+
+    //https://github.com/TrevorSundberg/h264-mp4-encoder
+    this.record = async () => {
+      remoteImport(`/h264-mp4-encoder.web.js`).then(({ HME }) => {
+        console.log(HME.createH264MP4Encoder().then);
+        /*
+        // Must be a multiple of 2.
+    encoder.width = 100;
+    encoder.height = 100;
+    encoder.initialize();
+    // Add a single gray frame, the alpha is ignored.
+    encoder.addFrameRgba(new Uint8Array(encoder.width * encoder.height * 4).fill(128))
+    // For canvas:
+    // encoder.addFrameRgba(ctx.getImageData(0, 0, encoder.width * encoder.height).data);
+    encoder.finalize();
+    const uint8Array = encoder.FS.readFile(encoder.outputFilename);
+    console.log(uint8Array);
+    encoder.delete();
+        */
+      });
+      //
+      // const HME = await import("h264-mp4-encoder").then((e) => e.default);
+    };
 
     this.rttFBO.texture.encoding = LinearEncoding;
 
