@@ -1,45 +1,160 @@
-import { Box, Environment, Plane, Sphere } from "@react-three/drei";
-import { createPortal, useThree } from "@react-three/fiber";
-import { EffectComposer } from "@react-three/postprocessing";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Scene } from "three";
+import {
+  Box,
+  Environment,
+  OrbitControls,
+  Plane,
+  useEnvironment,
+  useTexture,
+} from "@react-three/drei";
+import { createPortal, useFrame, useThree } from "@react-three/fiber";
+import { useMemo, useRef, useState } from "react";
+import {
+  Scene,
+  DoubleSide,
+  WebGLRenderTarget,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneGeometry,
+  PerspectiveCamera,
+  sRGBEncoding,
+  WebGLRenderer,
+  RepeatWrapping,
+  NearestFilter,
+  RGBAFormat,
+  FloatType,
+  Color,
+  TextureLoader,
+} from "three";
 import { GLOverlay } from "../GLOverlay";
 
 export function MyScene() {
-  let ref = useRef();
-  let glitchScene = useMemo(() => {
-    return new Scene();
+  let vAPI = useMemo(() => {
+    return new VideoAPI({});
   }, []);
+  //
+  useFrame((st, dt) => {
+    vAPI.work(st, dt);
+  });
+  //
 
-  let [fTex, setTex] = useState(null);
-
-  useEffect(() => {
-    console.log(ref.current);
-    ref.current.autoRenderToScreen = false;
-    console.log(ref?.current);
-    setTex(ref?.current?.outputBuffer?.texture);
-  }, []);
-
-  let viewport = useThree((s) => s.viewport);
+  let redBGTexture = useTexture(`/img/bg_red.jpg`);
+  let flowerTexture = useTexture(`/test_png_for_loklok/base_flower001.png`);
+  let linesTexture = useTexture(`/test_png_for_loklok/gen_line001.png`);
+  redBGTexture.encoding = sRGBEncoding;
+  flowerTexture.encoding = sRGBEncoding;
+  linesTexture.encoding = sRGBEncoding;
+  //
   return (
-    <>
-      {createPortal(
-        <group>
-          <Environment preset="studio"></Environment>
-          <Box></Box>
-        </group>,
-        glitchScene
+    <group>
+      <Environment preset="apartment" background></Environment>
+      {vAPI && (
+        <>
+          {createPortal(
+            <group>
+              {/* <Plane
+                scale={[650 / 100, 780 / 100, 1]}
+                position={[0, 0, -0.0001 * 2]}
+              >
+                <meshBasicMaterial
+                  transparent={true}
+                  map={redBGTexture}
+                ></meshBasicMaterial>
+              </Plane> */}
+
+              <Plane
+                scale={[650 / 100, 780 / 100, 1]}
+                position={[0, 0, -0.0001]}
+              >
+                <meshBasicMaterial
+                  transparent={true}
+                  map={flowerTexture}
+                  onBeforeCompile={(shader) => {
+                    shader.fragmentShader;
+                  }}
+                ></meshBasicMaterial>
+              </Plane>
+              <Plane scale={[650 / 100, 780 / 100, 1]} position={[0, 0, 0]}>
+                <meshBasicMaterial
+                  transparent={true}
+                  map={linesTexture}
+                ></meshBasicMaterial>
+              </Plane>
+            </group>,
+            vAPI.rttScene
+          )}
+
+          <OrbitControls></OrbitControls>
+
+          <group scale={[650 / 200, 780 / 200, 1]}>
+            <primitive object={vAPI.rttDisplayPlane.clone()}></primitive>
+          </group>
+          <group scale={[650 / 200, 780 / 200, 1]} position={[1, 1, 1]}>
+            <primitive object={vAPI.rttDisplayPlane.clone()}></primitive>
+          </group>
+        </>
       )}
-
-      <Plane args={[viewport.width, viewport.height, 1, 1]}>
-        <meshBasicMaterial map={fTex}></meshBasicMaterial>
-      </Plane>
-
-      {/* <Sphere></Sphere> */}
-      <EffectComposer renderPriority={10} ref={ref} scene={glitchScene}>
-        <GLOverlay></GLOverlay>
-      </EffectComposer>
-      {/* MyScene */}
-    </>
+    </group>
   );
+}
+
+class VideoAPI {
+  constructor({}) {
+    //
+    this.tasks = [];
+    //
+    this.onLoop = (v) => {
+      this.tasks.push(v);
+    };
+
+    this.rttFBO = new WebGLRenderTarget(650, 780, {
+      wrapS: RepeatWrapping,
+      wrapT: RepeatWrapping,
+      magFilter: NearestFilter,
+      minFilter: NearestFilter,
+      format: RGBAFormat,
+      type: FloatType,
+      anisotropy: 1,
+      depthBuffer: true,
+      stencilBuffer: true,
+      generateMipmaps: false,
+      encoding: sRGBEncoding,
+    });
+
+    this.rttScene = new Scene();
+    this.rttScene.background = new TextureLoader().loadAsync(
+      `data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7`
+    );
+
+    this.rttCamera = new PerspectiveCamera(75, 650 / 780, 0.1, 500);
+    this.rttCamera.position.z = 7;
+
+    this.onLoop(({ gl }) => {
+      gl.outputEncoding = sRGBEncoding;
+      /** @type {WebGLRenderer} */
+      let mgl = gl;
+
+      gl.setRenderTarget(this.rttFBO);
+      mgl.autoClear = false;
+      mgl.setClearAlpha(0);
+      mgl.setClearColor(0x000000);
+      mgl.clear(true, true, true);
+      gl.render(this.rttScene, this.rttCamera);
+      gl.setRenderTarget(null);
+    });
+
+    this.rttDisplayPlane = new Mesh(
+      new PlaneGeometry(1, 1),
+      new MeshBasicMaterial({
+        color: new Color(0xffffff),
+        map: this.rttFBO.texture,
+        transparent: true,
+        side: DoubleSide,
+      })
+    );
+  }
+  work(st, dt) {
+    this.tasks.forEach((tt) => {
+      tt(st, dt);
+    });
+  }
 }

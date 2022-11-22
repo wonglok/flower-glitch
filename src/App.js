@@ -5,7 +5,7 @@ import "./styles.css";
 export default function App() {
   return (
     <div className="full">
-      <Canvas className="full" gl={{ preserveDrawingBuffer: true }}>
+      <Canvas className="full" gl={{ alpha: true }}>
         <MyScene></MyScene>
         {/* <Environment preset="apartment" background /> */}
         <color attach="background" args={["#fff"]} />
