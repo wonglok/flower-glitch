@@ -195,18 +195,26 @@ class VideoAPI {
 
           vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.0);
-          vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
+          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
           intensity = intensityInput2Value * overallEffectLevel;
           moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
-          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.5);
+          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.5);
-          vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
+          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
+          intensity = intensityInput2Value * 0.01 * overallEffectLevel;
+          moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
+          rate = 0.0001 * rateInput2Value * overallEffectLevel;
+
+          vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
           vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR);
           vec4 glitchColor1G = texture2D(imageTexture, vUv + uv1NoiseG);
@@ -218,11 +226,23 @@ class VideoAPI {
           vec4 glitchColor2B = texture2D(imageTexture, vUv + uv2NoiseB);
           vec4 glitchColor2A = texture2D(imageTexture, vUv + uv2NoiseA);
 
+          vec4 glitchColor3R = texture2D(imageTexture, vUv + uv3NoiseR);
+          vec4 glitchColor3G = texture2D(imageTexture, vUv + uv3NoiseG);
+          vec4 glitchColor3B = texture2D(imageTexture, vUv + uv3NoiseB);
+          vec4 glitchColor3A = texture2D(imageTexture, vUv + uv3NoiseA);
+
           vec4 outColor = vec4(
             mix(glitchColor1R.r, glitchColor2R.r, 0.5),
             mix(glitchColor1G.g, glitchColor2G.g, 0.5),
             mix(glitchColor1B.b, glitchColor2B.b, 0.5),
             mix(glitchColor1A.a, glitchColor2A.a, 0.5)
+          );
+
+          outColor = vec4(
+            mix(outColor.r, glitchColor3R.r, 0.5),
+            mix(outColor.g, glitchColor3G.g, 0.5),
+            mix(outColor.b, glitchColor3B.b, 0.5),
+            mix(outColor.a, glitchColor3A.a, 0.5)
           );
 
           //sRGBToLinear
