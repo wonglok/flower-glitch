@@ -366,10 +366,10 @@ class VideoAPI {
         let url = URL.createObjectURL(new Blob([uint8Array]));
 
         importObjects.ref_video.src = url;
-        importObjects.ref_video.style.position = "fixed";
-        importObjects.ref_video.style.top = "0px";
-        importObjects.ref_video.style.right = "0px";
-        importObjects.ref_video.style.transfrom = "scale(0.5)";
+        // importObjects.ref_video.style.position = "fixed";
+        // importObjects.ref_video.style.top = "0px";
+        // importObjects.ref_video.style.right = "0px";
+        // importObjects.ref_video.style.transfrom = "scale(0.5)";
         //
 
         encoder.delete();
