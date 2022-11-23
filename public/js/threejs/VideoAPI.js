@@ -135,7 +135,7 @@ class VideoAPI {
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
           //
-          intensity = 250.1 * masterIntensity;;
+          intensity = 350.1 * masterIntensity;;
           moveAmount = 2.5 * 0.01 * masterIntensity;;
           rate = 0.0001 * masterIntensity;;
           vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
