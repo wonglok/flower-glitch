@@ -44,9 +44,13 @@ class VideoAPI {
     // this.renderer.domElement.style.position = "fixed";
     // this.renderer.domElement.style.top = "0px";
     // this.renderer.domElement.style.left = "0px";
-    // document.body.appendChild(this.renderer.domElement);
+    // document
+    //   .querySelector("#live-glitch-preview")
+    //   .appendChild(this.renderer.domElement);
     // this.onClean(() => {
-    //   document.body.removeChild(this.renderer.domElement);
+    //   document
+    //     .querySelector("#live-glitch-preview")
+    //     .removeChild(this.renderer.domElement);
     // });
 
     this.rttFBO = new WebGLRenderTarget(650, 780, {
@@ -60,7 +64,7 @@ class VideoAPI {
       depthBuffer: true,
       stencilBuffer: true,
       generateMipmaps: false,
-      encoding: LinearEncoding,
+      // encoding: LinearEncoding,
     });
     let {
       rateInput1Value,
@@ -73,6 +77,16 @@ class VideoAPI {
       amountInput2Value,
     } = importObjects.ref_effect_params;
 
+    console.log(
+      rateInput1Value,
+      intensityInput1Value,
+      amountInput1Value,
+
+      //
+      rateInput2Value,
+      intensityInput2Value,
+      amountInput2Value
+    );
     this.uvOffsets = {
       rateInput1Value: { value: Number(rateInput1Value) },
       intensityInput1Value: { value: Number(intensityInput1Value) },
@@ -179,9 +193,9 @@ class VideoAPI {
           moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput1Value * overallEffectLevel;
 
-          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
-          vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
-          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
+          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.35);
+          vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.35);
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
           intensity = intensityInput2Value * overallEffectLevel;
@@ -191,22 +205,27 @@ class VideoAPI {
           // intensity = 350.1 * overallEffectLevel;
           // moveAmount = 2.5 * 0.01 * overallEffectLevel;
           // rate = 0.0001 * overallEffectLevel;
-          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
-          vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
-          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
+          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.35);
+          vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.35);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
 
-          vec4 glitchColorR = texture2D(imageTexture, vUv + uv1NoiseR + uv2NoiseR);
-          vec4 glitchColorG = texture2D(imageTexture, vUv + uv1NoiseG + uv2NoiseG);
-          vec4 glitchColorB = texture2D(imageTexture, vUv + uv1NoiseB + uv2NoiseB);
-          vec4 glitchColorA = texture2D(imageTexture, vUv + uv1NoiseA + uv2NoiseA);
+          vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR);
+          vec4 glitchColor1G = texture2D(imageTexture, vUv + uv1NoiseG);
+          vec4 glitchColor1B = texture2D(imageTexture, vUv + uv1NoiseB);
+          vec4 glitchColor1A = texture2D(imageTexture, vUv + uv1NoiseA);
+
+          vec4 glitchColor2R = texture2D(imageTexture, vUv + uv2NoiseR);
+          vec4 glitchColor2G = texture2D(imageTexture, vUv + uv2NoiseG);
+          vec4 glitchColor2B = texture2D(imageTexture, vUv + uv2NoiseB);
+          vec4 glitchColor2A = texture2D(imageTexture, vUv + uv2NoiseA);
 
           vec4 outColor = vec4(
-            glitchColorR.r,
-            glitchColorG.g,
-            glitchColorB.b,
-            glitchColorA.a
+            mix(glitchColor1R.r, glitchColor2R.r, 0.5),
+            mix(glitchColor1G.g, glitchColor2G.g, 0.5),
+            mix(glitchColor1B.b, glitchColor2B.b, 0.5),
+            mix(glitchColor1A.a, glitchColor2A.a, 0.5)
           );
 
           //sRGBToLinear
@@ -293,7 +312,7 @@ class VideoAPI {
         let total = 90;
         for (let frame = 0; frame < total; frame++) {
           importObjects.ref_progress_box.innerText =
-            ((frame / (total)) * 100.0).toFixed(2) + "%";
+            ((frame / total) * 100.0).toFixed(2) + "%";
 
           await new Promise((r) => setTimeout(r, 0));
           ///////// LOOP
@@ -354,6 +373,7 @@ class VideoAPI {
           //
           encoder.addFrameRgba(typedArray);
 
+          mgl.outputEncoding = sRGBEncoding;
           mgl.render(this.realScene, this.realCamera);
 
           //
