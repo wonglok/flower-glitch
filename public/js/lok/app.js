@@ -25,7 +25,7 @@ function work({
       bg_red_jpg: await new TextureLoader()
         .loadAsync(`/img/bg_red.jpg`)
         .then((t) => {
-          t.encoding = LinearEncoding;
+          t.encoding = sRGBEncoding;
           return t;
         }),
       frame_png: await new TextureLoader()
