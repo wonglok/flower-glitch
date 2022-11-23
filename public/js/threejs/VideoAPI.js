@@ -193,21 +193,18 @@ class VideoAPI {
           moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput1Value * overallEffectLevel;
 
-          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.35);
+          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.35);
+          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.0);
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
           intensity = intensityInput2Value * overallEffectLevel;
           moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
-          // intensity = 350.1 * overallEffectLevel;
-          // moveAmount = 2.5 * 0.01 * overallEffectLevel;
-          // rate = 0.0001 * overallEffectLevel;
-          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.35);
+          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  1.4);
           vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.35);
+          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -1.4);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
 
