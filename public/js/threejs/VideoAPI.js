@@ -202,9 +202,9 @@ class VideoAPI {
           moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
-          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  1.4);
+          vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.5);
           vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -1.4);
+          vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  -0.5);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
 
@@ -370,8 +370,8 @@ class VideoAPI {
           //
           encoder.addFrameRgba(typedArray);
 
-          mgl.outputEncoding = sRGBEncoding;
-          mgl.render(this.realScene, this.realCamera);
+          // mgl.outputEncoding = sRGBEncoding;
+          // mgl.render(this.realScene, this.realCamera);
 
           //
         }
