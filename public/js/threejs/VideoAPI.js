@@ -123,7 +123,7 @@ class VideoAPI {
         void main () {
           float intensity = 1.0;
           float moveAmount = 1.0;
-          float rate = 0.0;
+          float rate = 1.0;
 
           //
           intensity = 5.1 * masterIntensity;
@@ -200,6 +200,8 @@ class VideoAPI {
         encoder.width = 650;
         encoder.height = 780;
         encoder.frameRate = 60;
+        encoder.temporalDenoise = true;
+        encoder.quantizationParameter = 15;
         encoder.initialize();
         //
 
@@ -212,8 +214,9 @@ class VideoAPI {
 
         // //!SECTION
         //!SECTION
-
-        for (let frame = 0; frame < 60 * 1.5; frame++) {
+        let reducer = 0.1;
+        let total = 60 * 1.5;
+        for (let frame = 0; frame < total; frame++) {
           importObjects.ref_progress_box.innerText =
             ((frame / (60 * 1.5)) * 100.0).toFixed(2) + "%";
 
