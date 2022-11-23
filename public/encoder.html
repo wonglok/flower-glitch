@@ -28,66 +28,66 @@
         <canvas id="generative-canvas" width="650" height="780"> </canvas>
         <div class="frame-container"></div>
       </div>
-      <div class="control-panel">
-        <div class="">
-          <div>
-            <label for="flower">Product type</label>
-            <select name="flower" id="flower-select">
-              <option selected value="flower1">Flower 1</option>
-              <option value="flower2">Flower 2</option>
-              <option value="flower3">Flower 3</option>
-            </select>
-          </div>
-          <div>
-            <!-- <label for="color-select">Color Selection</label> -->
-            <!-- <select name="color-select" id="color-select" multiple size="3" disabled>
-              <option value="gold1">Gold 1</option>
-              <option value="orange1">Orange 1</option>
-              <option value="blue1">Blue 1</option>
-              <option value="pink1">Pink 1</option>
-              <option value="red1">Red 1</option>
-              <option value="gold2">Gold 2</option>
-              <option value="orange2">Orange 2</option>
-              <option value="blue2">Blue 2</option>
-              <option value="pink2">Pink 2</option>
-              <option value="red2">Red 2</option>
-            </select> -->
-            <div class="effect-panel-container">
-              <div class="effect-panel">
-                <label for="rate1">Rate 1</label>
-                <input name="rate1" id="rate1" type="number" min="0" value="0.42" step="0.01" />
-                <label for="intensity1">Intensity 1</label>
-                <input name="intensity1" id="intensity1" type="number" min="0" value="5.1" step="0.01" />
-                <label for="amount1">Amount 1</label>
-                <input name="amount1" id="amount1" type="number" min="0" value="2.0" step="0.01" />
-              </div>
-              <div class="effect-panel">
-                <label for="rate2">Rate 2</label>
-                <input name="rate2" id="rate2" type="number" min="0" value="1" step="0.01" />
-                <label for="intensity2">Intensity 2</label>
-                <input name="intensity2" id="intensity2" type="number" min="0" value="350.1" step="0.01" />
-                <label for="amount2">Amount 2</label>
-                <input name="amount2" id="amount2" type="number" min="0" value="2.5" step="0.01" />
-              </div>
+      <div class="live-glitch-preview"></div>
+    </div>
+    <div class="control-panel">
+      <div class="">
+        <div>
+          <label for="flower">Product type</label>
+          <select name="flower" id="flower-select">
+            <option selected value="flower1">Flower 1</option>
+            <option value="flower2">Flower 2</option>
+            <option value="flower3">Flower 3</option>
+          </select>
+        </div>
+        <div>
+          <!-- <label for="color-select">Color Selection</label> -->
+          <!-- <select name="color-select" id="color-select" multiple size="3" disabled>
+            <option value="gold1">Gold 1</option>
+            <option value="orange1">Orange 1</option>
+            <option value="blue1">Blue 1</option>
+            <option value="pink1">Pink 1</option>
+            <option value="red1">Red 1</option>
+            <option value="gold2">Gold 2</option>
+            <option value="orange2">Orange 2</option>
+            <option value="blue2">Blue 2</option>
+            <option value="pink2">Pink 2</option>
+            <option value="red2">Red 2</option>
+          </select> -->
+          <div class="effect-panel-container">
+            <div class="effect-panel">
+              <label for="rate1">Rate 1</label>
+              <input name="rate1" id="rate1" type="number" min="0" value="0.42" step="0.01" />
+              <label for="intensity1">Intensity 1</label>
+              <input name="intensity1" id="intensity1" type="number" min="0" value="5.1" step="0.01" />
+              <label for="amount1">Amount 1</label>
+              <input name="amount1" id="amount1" type="number" min="0" value="2.0" step="0.01" />
+            </div>
+            <div class="effect-panel">
+              <label for="rate2">Rate 2</label>
+              <input name="rate2" id="rate2" type="number" min="0" value="1" step="0.01" />
+              <label for="intensity2">Intensity 2</label>
+              <input name="intensity2" id="intensity2" type="number" min="0" value="350.1" step="0.01" />
+              <label for="amount2">Amount 2</label>
+              <input name="amount2" id="amount2" type="number" min="0" value="2.5" step="0.01" />
             </div>
           </div>
         </div>
-        <label for="glitch-pert" id="gpsliderlabel">Glitch % (lower -> lessr the lines): 0.3</label>
-        <input type="range" id="glitch-pert" name="glitch-pert" value="0.3" min="0" max="1" step="0.1" />
-        <div class="btn-set">
-          <button onclick="randomize()">Random</button>
-          <button onclick="intitalMap()">Inital map</button>
-          <button onclick="extrmeMap()">Extreme map (position)</button>
-          <button onclick="extrmeWidthMap()">Extreme map (width)</button>
-        </div>
-        <button onclick="generateGlitchedVideo()" style="width: 100%">
-          Generate Glitch video <span id="progress-video-gen"></span>
-        </button>
-
-        <textarea id="data-preview" readonly></textarea>
       </div>
-    </div>
+      <label for="glitch-pert" id="gpsliderlabel">Glitch % (lower -> lessr the lines): 0.3</label>
+      <input type="range" id="glitch-pert" name="glitch-pert" value="0.3" min="0" max="1" step="0.1" />
+      <div class="btn-set">
+        <button onclick="randomize()">Random</button>
+        <button onclick="intitalMap()">Inital map</button>
+        <button onclick="extrmeMap()">Extreme map (position)</button>
+        <button onclick="extrmeWidthMap()">Extreme map (width)</button>
+      </div>
+      <button onclick="generateGlitchedVideo()" style="width: 100%">
+        Generate Glitch video <span id="progress-video-gen"></span>
+      </button>
 
+      <textarea id="data-preview" readonly></textarea>
+    </div>
     <div class="video-player">
       <video src="" id="preview-video" loop autoplay muted title="video"></video>
     </div>
@@ -111,12 +111,17 @@
       margin-bottom: 8px;
     }
     .video-container,
-    .video-player {
+    .video-player,
+    .live-glitch-preview {
       position: relative;
       width: 650px;
       height: 780px;
-      background-color: #670009;
+      background-color: url('/img/bg_red.jpg');
       margin-bottom: 32px;
+    }
+
+    .live-glitch-preview {
+      background-color: grey;
     }
 
     .preview-container {
