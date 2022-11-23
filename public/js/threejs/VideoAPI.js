@@ -211,9 +211,9 @@ class VideoAPI {
           moveAmount = amountInput2Value * 0.01  * 3.0 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
-          vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.3;
-          vec2 uv3NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.2;
-          vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.1;
+          vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv3NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
           vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR);
