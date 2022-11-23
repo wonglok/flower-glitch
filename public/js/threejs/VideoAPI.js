@@ -290,10 +290,10 @@ class VideoAPI {
         // //!SECTION
         //!SECTION
         let reducer = 0.1;
-        let total = 60 * 1.5;
+        let total = 90;
         for (let frame = 0; frame < total; frame++) {
           importObjects.ref_progress_box.innerText =
-            ((frame / (60 * 1.5)) * 100.0).toFixed(2) + "%";
+            ((frame / (total)) * 100.0).toFixed(2) + "%";
 
           await new Promise((r) => setTimeout(r, 0));
           ///////// LOOP
@@ -304,13 +304,13 @@ class VideoAPI {
       ref_canvas: new CanvasTexture(refCanvas),
          */
 
-          if (frame <= 60 * 0.5) {
-            this.uniforms0.overallEffectLevel.value = 0;
-            this.uniforms1.overallEffectLevel.value = 1;
-            this.uniforms2.overallEffectLevel.value = 0;
-          } else if (frame > 60 && frame < 70) {
+          if (frame <= total * 0.5) {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 0;
+            this.uniforms2.overallEffectLevel.value = 0;
+          } else if (frame > 30 && frame < 60) {
+            this.uniforms0.overallEffectLevel.value = 0;
+            this.uniforms1.overallEffectLevel.value = 1;
             this.uniforms2.overallEffectLevel.value = 0;
           } else {
             this.uniforms0.overallEffectLevel.value = 0;
