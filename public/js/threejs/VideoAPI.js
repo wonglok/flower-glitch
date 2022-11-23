@@ -60,8 +60,29 @@ class VideoAPI {
       generateMipmaps: false,
       encoding: sRGBEncoding,
     });
+    let {
+      rateInput1Value,
+      intensityInput1Value,
+      amountInput1Value,
 
+      //
+      rateInput2Value,
+      intensityInput2Value,
+      amountInput2Value,
+    } = importObjects.ref_effect_params;
+
+    this.uvOffsets = {
+      rateInput1Value: { value: rateInput1Value },
+      intensityInput1Value: { value: intensityInput1Value },
+      amountInput1Value: { value: amountInput1Value },
+
+      //
+      rateInput2Value: { value: rateInput2Value },
+      intensityInput2Value: { value: intensityInput2Value },
+      amountInput2Value: { value: amountInput2Value },
+    };
     this.uniforms0 = {
+      ...this.uvOffsets,
       overallEffectLevel: { value: 0 },
       time: {
         value: 0,
@@ -72,6 +93,7 @@ class VideoAPI {
     };
 
     this.uniforms1 = {
+      ...this.uvOffsets,
       overallEffectLevel: { value: 1 },
       time: {
         value: 0,
@@ -82,6 +104,7 @@ class VideoAPI {
     };
 
     this.uniforms2 = {
+      ...this.uvOffsets,
       overallEffectLevel: { value: 0 },
 
       time: {
@@ -116,6 +139,15 @@ class VideoAPI {
         uniform float overallEffectLevel;
         varying vec2 vUv;
 
+        uniform float rateInput1Value;
+        uniform float intensityInput1Value;
+        uniform float amountInput1Value;
+
+        //
+        uniform float rateInput2Value;
+        uniform float intensityInput2Value;
+        uniform float  amountInput2Value;
+
         #define RATE 0.00025
 
         float rand(vec2 co){
@@ -137,18 +169,21 @@ class VideoAPI {
           float rate = 1.0;
 
           //
-          intensity = 5.1 * overallEffectLevel;
-          moveAmount = 2.0 * 0.01 * overallEffectLevel;
-          rate = 0.0001 * 0.42 * overallEffectLevel;
+          intensity = intensityInput1Value * overallEffectLevel;
+          moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
+          rate = 0.0001 * rateInput1Value * overallEffectLevel;
           vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
-          //
-          intensity = 350.1 * overallEffectLevel;
-          moveAmount = 2.5 * 0.01 * overallEffectLevel;
-          rate = 0.0001 * overallEffectLevel;
+          intensity = intensityInput2Value * overallEffectLevel;
+          moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
+          rate = 0.0001 * rateInput2Value * overallEffectLevel;
+
+          // intensity = 350.1 * overallEffectLevel;
+          // moveAmount = 2.5 * 0.01 * overallEffectLevel;
+          // rate = 0.0001 * overallEffectLevel;
           vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
@@ -273,6 +308,7 @@ class VideoAPI {
             this.uniforms1.overallEffectLevel.value = 0;
             this.uniforms2.overallEffectLevel.value = 0;
           }
+
           this.uniforms0.time.value += 1 / 60;
           this.uniforms0.imageTexture.value = importObjects.bg_red_jpg;
 

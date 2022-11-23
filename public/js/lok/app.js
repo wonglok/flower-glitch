@@ -4,7 +4,13 @@ import { CanvasTexture, TextureLoader } from "../threejs/build/three.module.js";
 import { VideoAPI } from "../threejs/VideoAPI.js";
 
 let clean = () => {};
-function work({ refCanvas, refVideo, refProgressBox, refDownloadBtn }) {
+function work({
+  refCanvas,
+  refVideo,
+  refProgressBox,
+  refDownloadBtn,
+  effectParams,
+}) {
   console.log("work", refCanvas);
 
   clean();
@@ -32,6 +38,7 @@ function work({ refCanvas, refVideo, refProgressBox, refDownloadBtn }) {
       ref_video: refVideo,
       ref_download_btn: refDownloadBtn,
       ref_progress_box: refProgressBox,
+      ref_effect_params: effectParams,
     };
 
     importObjects.ref_canvas.encoding = LinearEncoding;
