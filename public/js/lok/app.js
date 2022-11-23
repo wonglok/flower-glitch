@@ -1,5 +1,4 @@
-import { LinearEncoding } from "three";
-import { sRGBEncoding } from "../threejs/build/three.module.js";
+import { LinearEncoding, sRGBEncoding } from "../threejs/build/three.module.js";
 import { CanvasTexture, TextureLoader } from "../threejs/build/three.module.js";
 import { VideoAPI } from "../threejs/VideoAPI.js";
 
