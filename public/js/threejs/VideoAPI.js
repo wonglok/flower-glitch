@@ -51,7 +51,7 @@ class VideoAPI {
     });
 
     this.uniforms0 = {
-      masterIntensity: { value: 0 },
+      overallLevel: { value: 0 },
       time: {
         value: 0,
       },
@@ -61,7 +61,7 @@ class VideoAPI {
     };
 
     this.uniforms1 = {
-      masterIntensity: { value: 1 },
+      overallLevel: { value: 1 },
       time: {
         value: 0,
       },
@@ -71,7 +71,7 @@ class VideoAPI {
     };
 
     this.uniforms2 = {
-      masterIntensity: { value: 0 },
+      overallLevel: { value: 0 },
 
       time: {
         value: 0,
@@ -102,7 +102,7 @@ class VideoAPI {
         fragmentShader: /* glsl */ `
         uniform sampler2D imageTexture;
         uniform float time;
-        uniform float masterIntensity;
+        uniform float overallLevel;
         varying vec2 vUv;
 
         #define RATE 0.00025
@@ -126,18 +126,18 @@ class VideoAPI {
           float rate = 1.0;
 
           //
-          intensity = 5.1 * masterIntensity;
-          moveAmount = 2.0 * 0.01 * masterIntensity;
-          rate = 0.0001 * 0.42 * masterIntensity;
+          intensity = 5.1 * overallLevel;
+          moveAmount = 2.0 * 0.01 * overallLevel;
+          rate = 0.0001 * 0.42 * overallLevel;
           vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
           //
-          intensity = 350.1 * masterIntensity;;
-          moveAmount = 2.5 * 0.01 * masterIntensity;;
-          rate = 0.0001 * masterIntensity;;
+          intensity = 350.1 * overallLevel;
+          moveAmount = 2.5 * 0.01 * overallLevel;
+          rate = 0.0001 * overallLevel;
           vec2 uv2NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv2NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
@@ -230,17 +230,17 @@ class VideoAPI {
          */
 
           if (frame <= 60 * 0.5) {
-            this.uniforms0.masterIntensity.value = 0;
-            this.uniforms1.masterIntensity.value = 1;
-            this.uniforms2.masterIntensity.value = 0;
+            this.uniforms0.overallLevel.value = 0;
+            this.uniforms1.overallLevel.value = 1;
+            this.uniforms2.overallLevel.value = 0;
           } else if (frame > 60 && frame < 70) {
-            this.uniforms0.masterIntensity.value = 0;
-            this.uniforms1.masterIntensity.value = 0;
-            this.uniforms2.masterIntensity.value = 0;
+            this.uniforms0.overallLevel.value = 0;
+            this.uniforms1.overallLevel.value = 0;
+            this.uniforms2.overallLevel.value = 0;
           } else {
-            this.uniforms0.masterIntensity.value = 0;
-            this.uniforms1.masterIntensity.value = 0;
-            this.uniforms2.masterIntensity.value = 0;
+            this.uniforms0.overallLevel.value = 0;
+            this.uniforms1.overallLevel.value = 0;
+            this.uniforms2.overallLevel.value = 0;
           }
           this.uniforms0.time.value += 1 / 60;
           this.uniforms0.imageTexture.value = importObjects.bg_red_jpg;
