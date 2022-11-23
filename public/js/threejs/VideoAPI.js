@@ -126,7 +126,7 @@ class VideoAPI {
           float rate = 0.0;
 
           //
-          intensity = 8.1 * masterIntensity;
+          intensity = 5.1 * masterIntensity;
           moveAmount = 2.0 * 0.01 * masterIntensity;
           rate = 0.0001 * 0.42 * masterIntensity;
           vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
@@ -199,6 +199,7 @@ class VideoAPI {
         //
         encoder.width = 650;
         encoder.height = 780;
+        encoder.frameRate = 60;
         encoder.initialize();
         //
 
