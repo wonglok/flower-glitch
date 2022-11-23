@@ -207,8 +207,8 @@ class VideoAPI {
           vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
-          intensity = intensityInput2Value * 0.01 * overallEffectLevel;
-          moveAmount = amountInput2Value * 0.01 * overallEffectLevel;
+          intensity = intensityInput2Value * 0.01 * overallEffectLevel * rand(vUv.yy * 0.000001);
+          moveAmount = amountInput2Value * 0.01  * 3.0 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
           vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
@@ -325,7 +325,6 @@ class VideoAPI {
 
         // //!SECTION
         //!SECTION
-        let reducer = 0.1;
         let total = 90;
         for (let frame = 0; frame < total; frame++) {
           importObjects.ref_progress_box.innerText =
@@ -339,12 +338,15 @@ class VideoAPI {
       frame_png: await new TextureLoader().loadAsync(`/img/frame.png`),
       ref_canvas: new CanvasTexture(refCanvas),
          */
+          /**!SECTION
+         * else if (frame > total * 0.5 && frame < 65) {
+            this.uniforms0.overallEffectLevel.value = 0;
+            this.uniforms1.overallEffectLevel.value = 1;
+            this.uniforms2.overallEffectLevel.value = 0;
+          }
+         */
 
           if (frame <= total * 0.5) {
-            this.uniforms0.overallEffectLevel.value = 0;
-            this.uniforms1.overallEffectLevel.value = 0;
-            this.uniforms2.overallEffectLevel.value = 0;
-          } else if (frame > 30 && frame < 60) {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 1;
             this.uniforms2.overallEffectLevel.value = 0;
@@ -373,9 +375,7 @@ class VideoAPI {
           // this.fsQuad.render(mgl);
           mgl.setRenderTarget(null);
 
-          let typedArray = new Uint8Array(
-            encoder.width * encoder.height * 4
-          ).fill(0);
+          let typedArray = new Uint8Array(encoder.width * encoder.height * 4);
 
           mgl.readRenderTargetPixels(
             this.rttFBO,

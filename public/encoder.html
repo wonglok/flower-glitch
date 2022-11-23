@@ -112,7 +112,7 @@
                 id="intensity2"
                 type="number"
                 min="0"
-                value="5000"
+                value="500"
                 step="0.01"
               />
               <label for="amount2">Amount 2</label>
@@ -509,6 +509,15 @@
       // Lok Lok please let me know how should I pass the params for you🙏🏻
 
       import("./js/lok/app.js").then((api) => {
+        //
+        rateInput1Value = rateInput1.value;
+        intensityInput1Value = intensityInput1.value;
+        amountInput1Value = amountInput1.value;
+
+        rateInput2Value = rateInput2.value;
+        intensityInput2Value = intensityInput2.value;
+        amountInput2Value = amountInput2.value;
+
         api.work({
           refCanvas: ctx.canvas,
           refProgressBox: document.querySelector("#progress-video-gen"),
