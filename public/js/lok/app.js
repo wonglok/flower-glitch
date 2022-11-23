@@ -4,7 +4,7 @@ import { CanvasTexture, TextureLoader } from "../threejs/build/three.module.js";
 import { VideoAPI } from "../threejs/VideoAPI.js";
 
 let clean = () => {};
-function work({ refCanvas, refVideo, refProgressBox }) {
+function work({ refCanvas, refVideo, refProgressBox, refDownloadBtn }) {
   console.log("work", refCanvas);
 
   clean();
@@ -25,6 +25,7 @@ function work({ refCanvas, refVideo, refProgressBox }) {
       frame_png: await new TextureLoader().loadAsync(`/img/frame.png`),
       ref_canvas: new CanvasTexture(refCanvas),
       ref_video: refVideo,
+      ref_download_btn: refDownloadBtn,
       ref_progress_box: refProgressBox,
     };
 

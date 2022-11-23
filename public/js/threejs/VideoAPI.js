@@ -277,6 +277,8 @@ class VideoAPI {
 
           //
           encoder.addFrameRgba(typedArray);
+
+          //
         }
 
         //
@@ -293,6 +295,9 @@ class VideoAPI {
         encoder.delete();
 
         importObjects.ref_progress_box.innerText = "";
+        importObjects.ref_download_btn.href = url;
+        importObjects.ref_download_btn.download = "lancome.mp4";
+        importObjects.ref_download_btn.querySelector("button").disabled = false;
       });
       /*
       // Must be a multiple of 2.

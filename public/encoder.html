@@ -99,7 +99,9 @@
         title="video"
       ></video>
     </div>
-    <button onclick="" disabled>Download</button>
+    <a id="download-btn" href="#">
+      <button disabled>Download</button>
+    </a>
   </body>
   <style>
     h1 {
@@ -332,6 +334,7 @@
           refCanvas: ctx.canvas,
           refProgressBox: document.querySelector("#progress-video-gen"),
           refVideo: document.querySelector("#preview-video"),
+          refDownloadBtn: document.querySelector("#download-btn"),
         });
       });
     }
