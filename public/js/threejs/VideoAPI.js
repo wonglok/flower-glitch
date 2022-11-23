@@ -15,26 +15,37 @@ import {
   ShaderMaterial,
   PlaneGeometry,
   DoubleSide,
+  PerspectiveCamera,
 } from "./build/three.module.js";
 import { FullScreenQuad } from "./examples/jsm/postprocessing/EffectComposer.js";
 
 class VideoAPI {
   constructor({ importObjects }) {
     this.cleans = [];
+    this.tasks = [];
 
     //
-    this.tasks = [];
+    this.onLoop = (v) => {
+      this.tasks.push(v);
+    };
+
+    this.onClean = (v) => {
+      this.cleans.push(v);
+    };
 
     this.renderer = new WebGLRenderer({
       preserveDrawingBuffer: true,
       alpha: true,
       antialias: true,
     });
-
-    //
-    this.onLoop = (v) => {
-      this.tasks.push(v);
-    };
+    this.renderer.setSize(650, 780, true);
+    this.renderer.domElement.style.position = "fixed";
+    this.renderer.domElement.style.top = "0px";
+    this.renderer.domElement.style.left = "0px";
+    document.body.appendChild(this.renderer.domElement);
+    this.onClean(() => {
+      document.body.removeChild(this.renderer.domElement);
+    });
 
     this.rttFBO = new WebGLRenderTarget(650, 780, {
       wrapS: RepeatWrapping,
@@ -194,6 +205,26 @@ class VideoAPI {
       })
     );
 
+    this.realScene = new Scene();
+    this.realCamera = new PerspectiveCamera(
+      75,
+      this.renderer.domElement.width / this.renderer.domElement.height,
+      0.1,
+      500
+    );
+    this.rttDisplayPlane.scale.y = -1;
+    this.realScene.add(this.rttDisplayPlane);
+    this.realCamera.position.z = 3.5;
+
+    // let rAFID = 0;
+    // let rAF = () => {
+    //   rAFID = requestAnimationFrame(rAF);
+    //   this.work();
+    // };
+    // rAFID = requestAnimationFrame(rAF);
+    // this.onClean(() => {
+    //   cancelAnimationFrame(rAFID);
+    // });
     import("../vendor/mp4encoder.js").then(({ HME }) => {
       HME.createH264MP4Encoder({}).then(async (encoder) => {
         //
@@ -278,6 +309,8 @@ class VideoAPI {
           //
           encoder.addFrameRgba(typedArray);
 
+          mgl.render(this.realScene, this.realCamera);
+
           //
         }
 
@@ -321,13 +354,8 @@ class VideoAPI {
     });
   }
   work() {
-    let st = {
-      gl: this.renderer,
-    };
-
     this.tasks.forEach((tt) => {
-      let dt = clock.getDelta();
-      tt(st, dt);
+      tt();
     });
   }
 }
