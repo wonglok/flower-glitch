@@ -379,14 +379,14 @@
     function intitalMap() {
       resetCanvas();
       drawFlowerImg(previewingFlower);
-      for (let i = 140; i < 560; i += 7) {
+      for (let i = 150; i < 560; i += 7) {
         lineRandomDrawer(0, i, 370);
       }
     }
     function extrmeMap() {
       resetCanvas();
       drawFlowerImg(previewingFlower);
-      for (let i = 140; i < 560; i += 7) {
+      for (let i = 150; i < 560; i += 7) {
         let isShow = Math.random() < 0.5;
         if (isShow) {
           let _xOffset = -185;
@@ -406,10 +406,10 @@
         let isShow = Math.random() < 0.5;
         if (isShow) {
           let _width = 111;
-          lineRandomDrawer(140, i, _width);
+          lineRandomDrawer(150, i, _width);
         } else {
           let _width = 370;
-          lineRandomDrawer(140, i, _width);
+          lineRandomDrawer(150, i, _width);
         }
       }
     }
