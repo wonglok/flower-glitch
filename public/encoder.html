@@ -18,11 +18,11 @@
     </script>
   </head>
   <body>
-    <h1>Canvas tester</h1>
+    <!-- <h1>Canvas tester</h1>
     <p>
       <strong>x offset range</strong>:-185 <-> 465 <br />
       <strong>line width</strong>: 111px <-> 370px
-    </p>
+    </p> -->
     <div class="preview-container">
       <div class="video-container">
         <canvas id="generative-canvas" width="650" height="780"> </canvas>
@@ -57,36 +57,41 @@
           <div class="effect-panel-container">
             <div class="effect-panel">
               <label for="rate1">Rate 1</label>
-              <input name="rate1" id="rate1" type="number" min="0" value="0.42" step="0.01" />
+              <input name="rate1" id="rate1" type="number" min="0" value="1" step="0.1" />
               <label for="intensity1">Intensity 1</label>
-              <input name="intensity1" id="intensity1" type="number" min="0" value="5.1" step="0.01" />
+              <input name="intensity1" id="intensity1" type="number" min="0" value="20" step="0.01" />
               <label for="amount1">Amount 1</label>
-              <input name="amount1" id="amount1" type="number" min="0" value="2.0" step="0.01" />
+              <input name="amount1" id="amount1" type="number" min="0" value="5" step="0.01" />
             </div>
             <div class="effect-panel">
               <label for="rate2">Rate 2</label>
-              <input name="rate2" id="rate2" type="number" min="0" value="1" step="0.01" />
+              <input name="rate2" id="rate2" type="number" min="0" value="0.01" step="0.01" />
               <label for="intensity2">Intensity 2</label>
-              <input name="intensity2" id="intensity2" type="number" min="0" value="350.1" step="0.01" />
+              <input name="intensity2" id="intensity2" type="number" min="0" value="50" step="0.01" />
               <label for="amount2">Amount 2</label>
-              <input name="amount2" id="amount2" type="number" min="0" value="2.5" step="0.01" />
+              <input name="amount2" id="amount2" type="number" min="0" value="0.5" step="0.01" />
             </div>
           </div>
         </div>
       </div>
-      <label for="glitch-pert" id="gpsliderlabel">Glitch % (lower -> lessr the lines): 0.3</label>
-      <input type="range" id="glitch-pert" name="glitch-pert" value="0.3" min="0" max="1" step="0.1" />
-      <div class="btn-set">
-        <button onclick="randomize()">Random</button>
-        <button onclick="intitalMap()">Inital map</button>
-        <button onclick="extrmeMap()">Extreme map (position)</button>
-        <button onclick="extrmeWidthMap()">Extreme map (width)</button>
-      </div>
-      <button onclick="generateGlitchedVideo()" style="width: 100%">
-        Generate Glitch video <span id="progress-video-gen"></span>
-      </button>
+      <div>
+        <label for="glitch-pert" id="gpsliderlabel">Glitch % (lower -> lessr the lines): 0.3</label>
+        <input type="range" id="glitch-pert" name="glitch-pert" value="0.3" min="0" max="1" step="0.1" />
+        <div class="btn-set">
+          <button onclick="randomize()">Random</button>
+          <button onclick="intitalMap()">Inital map</button>
+          <button onclick="extrmeMap()">Extreme map (position)</button>
+          <button onclick="extrmeWidthMap()">Extreme map (width)</button>
+        </div>
+        <button onclick="previewLiveGlitching()" style="width: 100%; margin-bottom: 4px">
+          Preview live glitch <span id="progress-video-gen"></span>
+        </button>
+        <button onclick="generateGlitchedVideo()" style="width: 100%">
+          Generate Glitch video <span id="progress-video-gen"></span>
+        </button>
 
-      <textarea id="data-preview" readonly></textarea>
+        <textarea id="data-preview" readonly></textarea>
+      </div>
     </div>
     <div class="video-player">
       <video src="" id="preview-video" loop autoplay muted title="video"></video>
@@ -116,7 +121,7 @@
       position: relative;
       width: 650px;
       height: 780px;
-      background-color: url('/img/bg_red.jpg');
+      background-image: url('/img/bg_red.jpg');
       margin-bottom: 32px;
     }
 
@@ -129,9 +134,8 @@
       gap: 16px;
     }
     .control-panel {
-      max-width: 35vw;
       display: flex;
-      flex-direction: column;
+      gap: 8px;
     }
     .effect-panel-container {
       display: flex;
@@ -160,7 +164,7 @@
 
     #data-preview {
       width: 100%;
-      height: 250px;
+      height: 100px;
     }
 
     .frame-container {
@@ -378,7 +382,7 @@
       document.getElementById('data-preview').innerHTML = previewStr;
       document.getElementById(
         'gpsliderlabel'
-      ).innerHTML = `Glitch % (lower -> lessr the lines): <strong>${glitchPert}</strong><br/> Total generated lines: <strong>${randomerlizer.length}</strong>`;
+      ).innerHTML = `Glitch % (lower -> lessr the lines): <strong>${glitchPert}</strong>`;
     }
 
     function intitalMap() {
@@ -417,6 +421,13 @@
           lineRandomDrawer(150, i, _width);
         }
       }
+    }
+
+    function previewLiveGlitching() {
+      // Function for injecting live preview
+
+      // For the preview, or final output, creative prefer 0.5s still image + 1s effect time + 0.5s still image
+      // I have edited the code in VideoAPI, you can check check~~
     }
 
     function generateGlitchedVideo(effectParams) {
