@@ -1,5 +1,7 @@
-import { Color, LinearEncoding, Mesh } from "three";
 import {
+  Color,
+  LinearEncoding,
+  Mesh,
   WebGLRenderTarget,
   NearestFilter,
   RepeatWrapping,
@@ -7,8 +9,6 @@ import {
   sRGBEncoding,
   WebGLRenderer,
   OrthographicCamera,
-  FramebufferTexture,
-  Vector2,
   Scene,
   MeshBasicMaterial,
   UnsignedByteType,
