@@ -22,7 +22,12 @@ function work({ refCanvas, refVideo, refProgressBox, refDownloadBtn }) {
           t.encoding = sRGBEncoding;
           return t;
         }),
-      frame_png: await new TextureLoader().loadAsync(`/img/frame.png`),
+      frame_png: await new TextureLoader()
+        .loadAsync(`/img/frame.png`)
+        .then((t) => {
+          t.encoding = sRGBEncoding;
+          return t;
+        }),
       ref_canvas: new CanvasTexture(refCanvas),
       ref_video: refVideo,
       ref_download_btn: refDownloadBtn,
