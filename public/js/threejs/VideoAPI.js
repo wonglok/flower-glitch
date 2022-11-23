@@ -193,9 +193,9 @@ class VideoAPI {
           moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput1Value * overallEffectLevel;
 
-          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.3;
+          vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.2;
+          vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.1;
           vec2 uv1NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
           intensity = intensityInput2Value * overallEffectLevel;
@@ -207,13 +207,13 @@ class VideoAPI {
           vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
-          intensity = intensityInput2Value * 0.01 * overallEffectLevel * rand(vUv.yy * 0.000001);
+          intensity = intensityInput2Value * 0.01 * overallEffectLevel;
           moveAmount = amountInput2Value * 0.01  * 3.0 * overallEffectLevel;
           rate = 0.0001 * rateInput2Value * overallEffectLevel;
 
-          vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv3NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
-          vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
+          vec2 uv3NoiseR = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.3;
+          vec2 uv3NoiseG = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.2;
+          vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0) * 1.1;
           vec2 uv3NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
           vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR);
