@@ -25,13 +25,13 @@ function work({
       bg_red_jpg: await new TextureLoader()
         .loadAsync(`/img/bg_red.jpg`)
         .then((t) => {
-          t.encoding = sRGBEncoding;
+          t.encoding = LinearEncoding;
           return t;
         }),
       frame_png: await new TextureLoader()
         .loadAsync(`/img/frame.png`)
         .then((t) => {
-          t.encoding = sRGBEncoding;
+          t.encoding = LinearEncoding;
           return t;
         }),
       ref_canvas: new CanvasTexture(refCanvas),

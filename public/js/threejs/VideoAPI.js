@@ -1,4 +1,4 @@
-import { Color, Mesh } from "three";
+import { Color, LinearEncoding, Mesh } from "three";
 import {
   WebGLRenderTarget,
   NearestFilter,
@@ -39,13 +39,14 @@ class VideoAPI {
       antialias: true,
     });
     this.renderer.setSize(650, 780, true);
-    this.renderer.domElement.style.position = "fixed";
-    this.renderer.domElement.style.top = "0px";
-    this.renderer.domElement.style.left = "0px";
-    document.body.appendChild(this.renderer.domElement);
-    this.onClean(() => {
-      document.body.removeChild(this.renderer.domElement);
-    });
+
+    // this.renderer.domElement.style.position = "fixed";
+    // this.renderer.domElement.style.top = "0px";
+    // this.renderer.domElement.style.left = "0px";
+    // document.body.appendChild(this.renderer.domElement);
+    // this.onClean(() => {
+    //   document.body.removeChild(this.renderer.domElement);
+    // });
 
     this.rttFBO = new WebGLRenderTarget(650, 780, {
       wrapS: RepeatWrapping,
@@ -58,7 +59,7 @@ class VideoAPI {
       depthBuffer: true,
       stencilBuffer: true,
       generateMipmaps: false,
-      encoding: sRGBEncoding,
+      encoding: LinearEncoding,
     });
     let {
       rateInput1Value,
@@ -72,15 +73,17 @@ class VideoAPI {
     } = importObjects.ref_effect_params;
 
     this.uvOffsets = {
-      rateInput1Value: { value: rateInput1Value },
-      intensityInput1Value: { value: intensityInput1Value },
-      amountInput1Value: { value: amountInput1Value },
+      rateInput1Value: { value: Number(rateInput1Value) },
+      intensityInput1Value: { value: Number(intensityInput1Value) },
+      amountInput1Value: { value: Number(amountInput1Value) },
 
       //
-      rateInput2Value: { value: rateInput2Value },
-      intensityInput2Value: { value: intensityInput2Value },
-      amountInput2Value: { value: amountInput2Value },
+      rateInput2Value: { value: Number(rateInput2Value) },
+      intensityInput2Value: { value: Number(intensityInput2Value) },
+      amountInput2Value: { value: Number(amountInput2Value) },
     };
+
+    console.log(this.uvOffsets);
     this.uniforms0 = {
       ...this.uvOffsets,
       overallEffectLevel: { value: 0 },
@@ -116,6 +119,8 @@ class VideoAPI {
     };
 
     this.fScene = new Scene();
+    this.fScene.background = new Color("#670009");
+    // .convertLinearToSRGB();
 
     let makeShader = ({ uniforms }) => {
       let shader = new ShaderMaterial({
@@ -130,7 +135,7 @@ class VideoAPI {
               1.0 - uv.y
             );
             gl_Position = vec4(position, 1.0);
-            gl_Position.z += 0.01;
+            // gl_Position.z += 0.01;
           }
         `,
         fragmentShader: /* glsl */ `
@@ -146,7 +151,7 @@ class VideoAPI {
         //
         uniform float rateInput2Value;
         uniform float intensityInput2Value;
-        uniform float  amountInput2Value;
+        uniform float amountInput2Value;
 
         #define RATE 0.00025
 
@@ -172,6 +177,7 @@ class VideoAPI {
           intensity = intensityInput1Value * overallEffectLevel;
           moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput1Value * overallEffectLevel;
+
           vec2 uv1NoiseR = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseG = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv1NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
@@ -189,7 +195,7 @@ class VideoAPI {
           vec2 uv2NoiseB = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
           vec2 uv2NoiseA = moveAmount * vec2(offset(intensity, vUv, rate), 0.0);
 
-          //
+
           vec4 glitchColorR = texture2D(imageTexture, vUv + uv1NoiseR + uv2NoiseR);
           vec4 glitchColorG = texture2D(imageTexture, vUv + uv1NoiseG + uv2NoiseG);
           vec4 glitchColorB = texture2D(imageTexture, vUv + uv1NoiseB + uv2NoiseB);
@@ -202,7 +208,8 @@ class VideoAPI {
             glitchColorA.a
           );
 
-          gl_FragColor = sRGBToLinear(outColor);
+          //sRGBToLinear
+          gl_FragColor = (outColor);
         }
 
         `,
@@ -214,7 +221,8 @@ class VideoAPI {
 
     this.fsQuad0 = new FullScreenQuad(makeShader({ uniforms: this.uniforms0 }));
     this.fsQuad0._mesh.position.z += -0.001;
-    this.fScene.add(this.fsQuad0._mesh);
+    // this.fScene.add(this.fsQuad0._mesh);
+    this.fsQuad0._mesh.visible = false;
 
     this.fsQuad1 = new FullScreenQuad(makeShader({ uniforms: this.uniforms1 }));
     this.fsQuad1._mesh.position.z += 0.0;
@@ -359,6 +367,10 @@ class VideoAPI {
         let url = URL.createObjectURL(new Blob([uint8Array]));
 
         importObjects.ref_video.src = url;
+        importObjects.ref_video.style.position = "fixed";
+        importObjects.ref_video.style.top = "0px";
+        importObjects.ref_video.style.right = "0px";
+        importObjects.ref_video.style.transfrom = "scale(0.5)";
         //
 
         encoder.delete();

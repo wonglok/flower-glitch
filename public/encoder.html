@@ -258,12 +258,12 @@
     var glitchPert = 0.3;
     var randomerlizer = [];
 
-    var rateInput1Value = 1;
-    var intensityInput1Value = 1;
-    var amountInput1Value = 1;
-    var rateInput2Value = 1;
-    var intensityInput2Value = 1;
-    var amountInput2Value = 1;
+    var rateInput1Value = 0;
+    var intensityInput1Value = 0;
+    var amountInput1Value = 0;
+    var rateInput2Value = 0;
+    var intensityInput2Value = 0;
+    var amountInput2Value = 0;
 
     var canvas = document.getElementById("generative-canvas");
     var ctx = canvas.getContext("2d");
@@ -291,6 +291,14 @@
     const rateInput2 = document.querySelector("#rate2");
     const intensityInput2 = document.querySelector("#intensity2");
     const amountInput2 = document.querySelector("#amount2");
+
+    rateInput1Value = rateInput1.value;
+    intensityInput1Value = intensityInput1.value;
+    amountInput1Value = amountInput1.value;
+
+    rateInput2Value = rateInput2.value;
+    intensityInput2Value = intensityInput2.value;
+    amountInput2Value = amountInput2.value;
 
     rateInput1.addEventListener("input", (event) => {
       rateInput1Value = event.target.value;
@@ -326,9 +334,9 @@
       randomize();
     });
 
-    colorSelector.addEventListener("change", (event) => {
-      // console.log(event.target.);
-    });
+    // colorSelector.addEventListener("change", (event) => {
+    //   // console.log(event.target.);
+    // });
 
     // Functions
 
