@@ -505,7 +505,7 @@
       // I have edited the code in VideoAPI, you can check check~~
     }
 
-    function generateGlitchedVideo(effectParams) {
+    function generateGlitchedVideo() {
       // Lok Lok please let me know how should I pass the params for you🙏🏻
 
       import("./js/lok/app.js").then((api) => {
@@ -536,5 +536,10 @@
         });
       });
     }
+    window.onload = () => {
+      setTimeout(() => {
+        generateGlitchedVideo();
+      });
+    };
   </script>
 </html>

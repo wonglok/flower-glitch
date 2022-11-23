@@ -346,7 +346,7 @@ class VideoAPI {
           }
          */
 
-          if (frame <= total * 0.5) {
+          if (frame <= total * 0.333) {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 1;
             this.uniforms2.overallEffectLevel.value = 0;
