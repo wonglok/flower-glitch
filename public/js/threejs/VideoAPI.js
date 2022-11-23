@@ -195,7 +195,7 @@ class VideoAPI {
     );
 
     import("../vendor/mp4encoder.js").then(({ HME }) => {
-      HME.createH264MP4Encoder({}).then((encoder) => {
+      HME.createH264MP4Encoder({}).then(async (encoder) => {
         //
         encoder.width = 650;
         encoder.height = 780;
@@ -213,7 +213,10 @@ class VideoAPI {
         //!SECTION
 
         for (let frame = 0; frame < 60 * 1.5; frame++) {
-          console.log((frame / (60 * 1.5)) * 100.0 + "%");
+          importObjects.ref_progress_box.innerText =
+            ((frame / (60 * 1.5)) * 100.0).toFixed(2) + "%";
+
+          await new Promise((r) => setTimeout(r, 0));
           ///////// LOOP
           /**!SECTION
          *    //
@@ -223,13 +226,13 @@ class VideoAPI {
          */
 
           if (frame <= 60 * 0.5) {
-            this.uniforms0.masterIntensity.value = 1;
+            this.uniforms0.masterIntensity.value = 0;
             this.uniforms1.masterIntensity.value = 1;
-            this.uniforms2.masterIntensity.value = 1;
-          } else if (frame > 60 && frame <= 70) {
-            this.uniforms0.masterIntensity.value = Math.abs(frame - 60) / 10;
-            this.uniforms1.masterIntensity.value = Math.abs(frame - 60) / 10;
-            this.uniforms2.masterIntensity.value = Math.abs(frame - 60) / 10;
+            this.uniforms2.masterIntensity.value = 0;
+          } else if (frame > 60 && frame < 70) {
+            this.uniforms0.masterIntensity.value = 0;
+            this.uniforms1.masterIntensity.value = 0;
+            this.uniforms2.masterIntensity.value = 0;
           } else {
             this.uniforms0.masterIntensity.value = 0;
             this.uniforms1.masterIntensity.value = 0;
@@ -284,6 +287,8 @@ class VideoAPI {
         //
 
         encoder.delete();
+
+        importObjects.ref_progress_box.innerText = "";
       });
       /*
       // Must be a multiple of 2.

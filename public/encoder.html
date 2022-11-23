@@ -82,7 +82,7 @@
           <button onclick="extrmeWidthMap()">Extreme map (width)</button>
         </div>
         <button onclick="generateGlitchedVideo()" style="width: 100%">
-          Generate Glitch video
+          Generate Glitch video <span id="progress-video-gen"></span>
         </button>
 
         <textarea id="data-preview" readonly></textarea>
@@ -330,6 +330,7 @@
       import("./js/lok/app.js").then((api) => {
         api.work({
           refCanvas: ctx.canvas,
+          refProgressBox: document.querySelector("#progress-video-gen"),
           refVideo: document.querySelector("#preview-video"),
         });
       });
