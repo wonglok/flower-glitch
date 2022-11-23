@@ -408,8 +408,6 @@ class VideoAPI {
   }
 }
 
-export { VideoAPI };
-
 // Helper for passes that need to fill the viewport with a single quad.
 
 const _camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -444,3 +442,5 @@ class FullScreenQuad {
     this._mesh.material = value;
   }
 }
+
+export { VideoAPI };
