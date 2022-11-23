@@ -189,7 +189,7 @@ class VideoAPI {
           float rate = 1.0;
 
           //
-          intensity = intensityInput1Value * overallEffectLevel;
+          intensity = intensityInput1Value * overallEffectLevel * rand(vec2(floor(vUv.y * 10.0) / 10.0));
           moveAmount = amountInput1Value * 0.01 * overallEffectLevel;
           rate = 0.0001 * rateInput1Value * overallEffectLevel;
 
