@@ -121,6 +121,7 @@ class VideoAPI {
 
     this.fScene = new Scene();
     this.fScene.background = new Color("#670009");
+    // For background, please use img/bg_red.jpg
 
     let makeShader = ({ uniforms }) => {
       let shader = new ShaderMaterial({
