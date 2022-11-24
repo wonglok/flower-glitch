@@ -86,9 +86,14 @@ class VideoAPI {
       //
       rateInput2Value,
       intensityInput2Value,
-      amountInput2Value
+      amountInput2Value,
+
+      satuation1,
+      lightness1
     );
     this.uvOffsets = {
+      satuation: { value: satuation1 },
+      lightness: { value: lightness1 },
       rateInput1Value: { value: Number(rateInput1Value) },
       intensityInput1Value: { value: Number(intensityInput1Value) },
       amountInput1Value: { value: Number(amountInput1Value) },
@@ -168,6 +173,10 @@ class VideoAPI {
         uniform float rateInput2Value;
         uniform float intensityInput2Value;
         uniform float amountInput2Value;
+
+        uniform float satuation;
+        uniform float lightness;
+
 
         #define RATE 0.00025
 
@@ -264,10 +273,10 @@ class VideoAPI {
 
           //sRGBToLinear
           gl_FragColor.rgb = vec3(
-            pow(outColor.r, 1.0),
-            pow(outColor.g, 1.0),
-            pow(outColor.b, 1.0)
-          ) * 1.0;
+            pow(outColor.r, satuation),
+            pow(outColor.g, satuation),
+            pow(outColor.b, satuation)
+          ) * lightness;
 
           gl_FragColor.a = outColor.a;
         }

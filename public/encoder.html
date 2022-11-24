@@ -137,7 +137,35 @@
           </div>
         </div>
       </div>
+
       <div>
+        <div>
+          <label for="lightness1"
+            >Color.rgb * Number - RGB Light/Darkness</label
+          >
+          <input
+            name="lightness1"
+            id="lightness1"
+            type="number"
+            min="0"
+            value="0.93"
+            step="0.01"
+          />
+        </div>
+        <div>
+          <label for="satuation1"
+            >pow(Color.rgb, Number) - RGB Satuation
+          </label>
+          <input
+            name="satuation1"
+            id="satuation1"
+            type="number"
+            min="0"
+            value="1.1"
+            step="0.01"
+          />
+        </div>
+
         <label for="glitch-pert" id="gpsliderlabel"
           >Glitch % (lower -> lessr the lines): 0.3</label
         >
@@ -317,6 +345,10 @@
     var intensityInput2Value = 0;
     var amountInput2Value = 0;
 
+    //!SECTION
+    var satuation1 = 1;
+    var lightness1 = 1;
+
     var canvas = document.getElementById("generative-canvas");
     var ctx = canvas.getContext("2d");
 
@@ -344,6 +376,9 @@
     const intensityInput2 = document.querySelector("#intensity2");
     const amountInput2 = document.querySelector("#amount2");
 
+    const satuation1el = document.querySelector("#satuation1");
+    const lightness1el = document.querySelector("#lightness1");
+
     rateInput1Value = rateInput1.value;
     intensityInput1Value = intensityInput1.value;
     amountInput1Value = amountInput1.value;
@@ -351,6 +386,9 @@
     rateInput2Value = rateInput2.value;
     intensityInput2Value = intensityInput2.value;
     amountInput2Value = amountInput2.value;
+
+    satuation1 = satuation1el.value;
+    lightness1 = lightness1el.value;
 
     rateInput1.addEventListener("input", (event) => {
       rateInput1Value = event.target.value;
@@ -514,6 +552,9 @@
         intensityInput2Value = intensityInput2.value;
         amountInput2Value = amountInput2.value;
 
+        satuation1 = satuation1el.value;
+        lightness1 = lightness1el.value;
+
         api.work({
           refCanvas: ctx.canvas,
           refProgressBox: document.querySelector("#progress-video-gen"),
@@ -528,6 +569,9 @@
             rateInput2Value,
             intensityInput2Value,
             amountInput2Value,
+
+            satuation1,
+            lightness1,
           },
         });
       });
