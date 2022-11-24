@@ -40,6 +40,7 @@ class VideoAPI {
       antialias: true,
     });
     this.renderer.setSize(650, 780, true);
+    this.renderer.outputEncoding = LinearEncoding;
 
     // this.renderer.domElement.style.position = "fixed";
     // this.renderer.domElement.style.top = "0px";
@@ -64,7 +65,7 @@ class VideoAPI {
       depthBuffer: true,
       stencilBuffer: true,
       generateMipmaps: false,
-      // encoding: LinearEncoding,
+      encoding: LinearEncoding,
     });
     let {
       rateInput1Value,
@@ -179,8 +180,24 @@ class VideoAPI {
           return rand(vec2(shaderTime, round(uv.y * blocks)));
         }
 
-        vec4 sRGBToLinear( in vec4 value ) {
-          return vec4( mix( pow( value.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), value.rgb * 0.0773993808, vec3( lessThanEqual( value.rgb, vec3( 0.04045 ) ) ) ), value.a );
+        // vec4 sRGBToLinear( in vec4 value ) {
+        //   return vec4( mix( pow( value.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), value.rgb * 0.0773993808, vec3( lessThanEqual( value.rgb, vec3( 0.04045 ) ) ) ), value.a );
+        // }
+
+        vec3 sRGBToLinear(vec3 rgb)
+        {
+          // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+          return mix(pow((rgb + 0.055) * (1.0 / 1.055), vec3(2.4)),
+                    rgb * (1.0/12.92),
+                    lessThanEqual(rgb, vec3(0.04045)));
+        }
+
+        vec3 LinearToSRGB(vec3 rgb)
+        {
+          // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+          return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
+                    rgb * 12.92,
+                    lessThanEqual(rgb, vec3(0.0031308)));
         }
 
         void main () {
@@ -246,7 +263,13 @@ class VideoAPI {
           );
 
           //sRGBToLinear
-          gl_FragColor = (outColor);
+          gl_FragColor.rgb = vec3(
+            pow(outColor.r, 1.0),
+            pow(outColor.g, 1.0),
+            pow(outColor.b, 1.0)
+          ) * 1.0;
+
+          gl_FragColor.a = outColor.a;
         }
 
         `,
@@ -367,8 +390,6 @@ class VideoAPI {
 
           /** @type {WebGLRenderer} */
           let mgl = this.renderer;
-
-          mgl.outputEncoding = sRGBEncoding;
 
           mgl.setRenderTarget(this.rttFBO);
           mgl.render(this.fScene, this.rttCamera);

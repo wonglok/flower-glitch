@@ -1,4 +1,5 @@
-import { LinearEncoding, sRGBEncoding } from "../threejs/build/three.module.js";
+import { sRGBEncoding } from "three";
+import { LinearEncoding } from "../threejs/build/three.module.js";
 import { CanvasTexture, TextureLoader } from "../threejs/build/three.module.js";
 import { VideoAPI } from "../threejs/VideoAPI.js";
 
@@ -22,17 +23,19 @@ function work({
     let importObjects = {
       //
       bg_red_jpg: await new TextureLoader()
-        .loadAsync(`/img/bg_red.jpg`)
+        .loadAsync(`/img/bg_red.png`)
         .then((t) => {
           t.encoding = LinearEncoding;
           return t;
         }),
+
       frame_png: await new TextureLoader()
         .loadAsync(`/img/frame.png`)
         .then((t) => {
           t.encoding = LinearEncoding;
           return t;
         }),
+
       ref_canvas: new CanvasTexture(refCanvas),
       ref_video: refVideo,
       ref_download_btn: refDownloadBtn,
