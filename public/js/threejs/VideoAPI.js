@@ -357,7 +357,7 @@ class VideoAPI {
 
         // //!SECTION
         //!SECTION
-        let total = 90;
+        let total = 105;
         for (let frame = 0; frame < total; frame++) {
           importObjects.ref_progress_box.innerText =
             ((frame / total) * 100.0).toFixed(2) + "%";
@@ -378,7 +378,12 @@ class VideoAPI {
           }
          */
 
-          if (frame <= total * 0.333) {
+          if (frame <= 30) {
+            this.uniforms0.overallEffectLevel.value = 0;
+            this.uniforms1.overallEffectLevel.value = 0;
+            this.uniforms2.overallEffectLevel.value = 0;
+          }
+          else if (frame > 30 && frame < 75) {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 1;
             this.uniforms2.overallEffectLevel.value = 0;
