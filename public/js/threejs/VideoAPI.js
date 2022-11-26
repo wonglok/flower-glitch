@@ -283,9 +283,11 @@ class VideoAPI {
           vec4 finalOutput = mixedFromLayer1n2n3;
           //sRGBToLinear
           gl_FragColor.rgb = vec3(
-            pow(finalOutput.r, satuation),
-            pow(finalOutput.g, satuation),
-            pow(finalOutput.b, satuation)
+            vec3(
+              pow(finalOutput.r, satuation),
+              pow(finalOutput.g, satuation),
+              pow(finalOutput.b, satuation)
+            )
           ) * lightness;
 
           gl_FragColor.a = finalOutput.a;
