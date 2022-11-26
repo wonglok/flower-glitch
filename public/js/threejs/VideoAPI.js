@@ -114,6 +114,9 @@ class VideoAPI {
       imageTexture: {
         value: null,
       },
+      encoding: {
+        value: 0,
+      },
     };
 
     this.uniforms1 = {
@@ -125,10 +128,14 @@ class VideoAPI {
       imageTexture: {
         value: null,
       },
+      encoding: {
+        value: 0,
+      },
     };
 
     this.uniforms2 = {
       ...this.uvOffsets,
+
       overallEffectLevel: { value: 0 },
 
       time: {
@@ -136,6 +143,9 @@ class VideoAPI {
       },
       imageTexture: {
         value: null,
+      },
+      encoding: {
+        value: 0,
       },
     };
 
@@ -176,6 +186,8 @@ class VideoAPI {
 
         uniform float satuation;
         uniform float lightness;
+
+        uniform float encoding;
 
 
         #define RATE 0.00025
@@ -273,6 +285,20 @@ class VideoAPI {
           vec4 glitchColor3B = texture2D(imageTexture, vUv + uv3NoiseB) * moreLessBlueForLayer3;
           vec4 glitchColor3A = texture2D(imageTexture, vUv + uv3NoiseA) * moreLessAlphaForLayer3;
 
+          if (encoding == 1.0) {
+            glitchColor1R.rgb = LinearToSRGB(glitchColor1R.rgb);
+            glitchColor1G.rgb = LinearToSRGB(glitchColor1G.rgb);
+            glitchColor1B.rgb = LinearToSRGB(glitchColor1B.rgb);
+
+            glitchColor2R.rgb = LinearToSRGB(glitchColor2R.rgb);
+            glitchColor2G.rgb = LinearToSRGB(glitchColor2G.rgb);
+            glitchColor2B.rgb = LinearToSRGB(glitchColor2B.rgb);
+
+            glitchColor3R.rgb = LinearToSRGB(glitchColor3R.rgb);
+            glitchColor3G.rgb = LinearToSRGB(glitchColor3G.rgb);
+            glitchColor3B.rgb = LinearToSRGB(glitchColor3B.rgb);
+          }
+
           vec4 mixedFromLayer1n2n3 = vec4(
             (glitchColor1R.r + glitchColor2R.r + glitchColor3R.r) / 3.0,
             (glitchColor1G.g + glitchColor2G.g + glitchColor3G.g) / 3.0,
@@ -282,7 +308,7 @@ class VideoAPI {
 
           vec4 finalOutput = mixedFromLayer1n2n3;
           //sRGBToLinear
-          gl_FragColor.rgb = vec3(
+          finalOutput.rgb = vec3(
             vec3(
               pow(finalOutput.r, satuation),
               pow(finalOutput.g, satuation),
@@ -290,7 +316,8 @@ class VideoAPI {
             )
           ) * lightness;
 
-          gl_FragColor.a = finalOutput.a;
+
+          gl_FragColor = finalOutput;
         }
 
         `,
@@ -301,7 +328,7 @@ class VideoAPI {
     };
 
     this.fsQuad0 = new FullScreenQuad(makeShader({ uniforms: this.uniforms0 }));
-    this.fsQuad0._mesh.position.z += -0.0001;
+    this.fsQuad0._mesh.position.z += -0.001;
     this.fScene.add(this.fsQuad0._mesh);
     this.fsQuad0._mesh.visible = false;
 
@@ -310,7 +337,7 @@ class VideoAPI {
     this.fScene.add(this.fsQuad1._mesh);
 
     this.fsQuad2 = new FullScreenQuad(makeShader({ uniforms: this.uniforms2 }));
-    this.fsQuad2._mesh.position.z += 0.0001;
+    this.fsQuad2._mesh.position.z += 0.001;
     this.fScene.add(this.fsQuad2._mesh);
 
     this.rttCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -406,12 +433,18 @@ class VideoAPI {
 
           this.uniforms0.time.value += 1 / 60;
           this.uniforms0.imageTexture.value = importObjects.bg_red_jpg;
+          this.uniforms0.encoding.value =
+            importObjects.bg_red_jpg.encoding === sRGBEncoding ? 1 : 0;
 
           this.uniforms1.time.value += 1 / 60;
           this.uniforms1.imageTexture.value = importObjects.ref_canvas;
+          this.uniforms1.encoding.value =
+            importObjects.ref_canvas.encoding === sRGBEncoding ? 1 : 0;
 
           this.uniforms2.time.value += 1 / 60;
           this.uniforms2.imageTexture.value = importObjects.frame_png;
+          this.uniforms2.encoding.value =
+            importObjects.frame_png.encoding === sRGBEncoding ? 1 : 0;
 
           /** @type {WebGLRenderer} */
           let mgl = this.renderer;

@@ -25,14 +25,14 @@ function work({
       bg_red_jpg: await new TextureLoader()
         .loadAsync(`/img/bg_red.png`)
         .then((t) => {
-          t.encoding = LinearEncoding;
+          t.encoding = sRGBEncoding;
           return t;
         }),
 
       frame_png: await new TextureLoader()
         .loadAsync(`/img/frame.png`)
         .then((t) => {
-          t.encoding = LinearEncoding;
+          t.encoding = sRGBEncoding;
           return t;
         }),
 
@@ -43,8 +43,8 @@ function work({
       ref_effect_params: effectParams,
     };
 
-    importObjects.ref_canvas.encoding = LinearEncoding;
-    importObjects.ref_canvas.needsUpdate = true;
+    // importObjects.ref_canvas.encoding = LinearEncoding;
+    // importObjects.ref_canvas.needsUpdate = true;
 
     let app = new VideoAPI({ importObjects });
     clean = () => {
