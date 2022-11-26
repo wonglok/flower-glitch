@@ -92,8 +92,8 @@ class VideoAPI {
       lightness1
     );
     this.uvOffsets = {
-      satuation: { value: satuation1 },
-      lightness: { value: lightness1 },
+      satuation: { value: Number(satuation1) },
+      lightness: { value: Number(lightness1) },
       rateInput1Value: { value: Number(rateInput1Value) },
       intensityInput1Value: { value: Number(intensityInput1Value) },
       amountInput1Value: { value: Number(amountInput1Value) },
