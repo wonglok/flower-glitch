@@ -247,7 +247,6 @@ class VideoAPI {
           float moreLessBlueForLayer1 = 1.0;
           float moreLessAlphaForLayer1 = 1.0;
 
-
           float moreLessRedForLayer2 = 1.0;
           float moreLessGreenForLayer2 = 1.0;
           float moreLessBlueForLayer2 = 1.0;
@@ -274,18 +273,11 @@ class VideoAPI {
           vec4 glitchColor3B = texture2D(imageTexture, vUv + uv3NoiseB) * moreLessBlueForLayer3;
           vec4 glitchColor3A = texture2D(imageTexture, vUv + uv3NoiseA) * moreLessAlphaForLayer3;
 
-          vec4 mixedFromLayer1n2 = vec4(
-            mix(glitchColor1R.r, glitchColor2R.r, 0.5),
-            mix(glitchColor1G.g, glitchColor2G.g, 0.5),
-            mix(glitchColor1B.b, glitchColor2B.b, 0.5),
-            mix(glitchColor1A.a, glitchColor2A.a, 0.5)
-          );
-
           vec4 mixedFromLayer1n2n3 = vec4(
-            mix(mixedFromLayer1n2.r, glitchColor3R.r, 0.5),
-            mix(mixedFromLayer1n2.g, glitchColor3G.g, 0.5),
-            mix(mixedFromLayer1n2.b, glitchColor3B.b, 0.5),
-            mix(mixedFromLayer1n2.a, glitchColor3A.a, 0.5)
+            (glitchColor1R.r + glitchColor2R.r + glitchColor3R.r) / 3.0,
+            (glitchColor1G.g + glitchColor2G.g + glitchColor3G.g) / 3.0,
+            (glitchColor1B.b + glitchColor2B.b + glitchColor3B.b) / 3.0,
+            (glitchColor1A.a + glitchColor2A.a + glitchColor3A.a) / 3.0
           );
 
           vec4 finalOutput = mixedFromLayer1n2n3;
