@@ -242,43 +242,61 @@ class VideoAPI {
           vec2 uv3NoiseB = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
           vec2 uv3NoiseA = moveAmount * vec2(offset(intensity, vUv, rate),  0.0);
 
-          vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR);
-          vec4 glitchColor1G = texture2D(imageTexture, vUv + uv1NoiseG);
-          vec4 glitchColor1B = texture2D(imageTexture, vUv + uv1NoiseB);
-          vec4 glitchColor1A = texture2D(imageTexture, vUv + uv1NoiseA);
+          float moreLessRedForLayer1 = 1.0;
+          float moreLessGreenForLayer1 = 1.0;
+          float moreLessBlueForLayer1 = 1.0;
+          float moreLessAlphaForLayer1 = 1.0;
 
-          vec4 glitchColor2R = texture2D(imageTexture, vUv + uv2NoiseR);
-          vec4 glitchColor2G = texture2D(imageTexture, vUv + uv2NoiseG);
-          vec4 glitchColor2B = texture2D(imageTexture, vUv + uv2NoiseB);
-          vec4 glitchColor2A = texture2D(imageTexture, vUv + uv2NoiseA);
 
-          vec4 glitchColor3R = texture2D(imageTexture, vUv + uv3NoiseR);
-          vec4 glitchColor3G = texture2D(imageTexture, vUv + uv3NoiseG);
-          vec4 glitchColor3B = texture2D(imageTexture, vUv + uv3NoiseB);
-          vec4 glitchColor3A = texture2D(imageTexture, vUv + uv3NoiseA);
+          float moreLessRedForLayer2 = 1.0;
+          float moreLessGreenForLayer2 = 1.0;
+          float moreLessBlueForLayer2 = 1.0;
+          float moreLessAlphaForLayer2 = 1.0;
 
-          vec4 outColor = vec4(
+          float moreLessRedForLayer3 = 1.0;
+          float moreLessGreenForLayer3 = 1.0;
+          float moreLessBlueForLayer3 = 1.0;
+          float moreLessAlphaForLayer3 = 1.0;
+
+
+          vec4 glitchColor1R = texture2D(imageTexture, vUv + uv1NoiseR) * moreLessRedForLayer1;
+          vec4 glitchColor1G = texture2D(imageTexture, vUv + uv1NoiseG) * moreLessGreenForLayer1;
+          vec4 glitchColor1B = texture2D(imageTexture, vUv + uv1NoiseB) * moreLessBlueForLayer1;
+          vec4 glitchColor1A = texture2D(imageTexture, vUv + uv1NoiseA) * moreLessAlphaForLayer1;
+
+          vec4 glitchColor2R = texture2D(imageTexture, vUv + uv2NoiseR) * moreLessRedForLayer2;
+          vec4 glitchColor2G = texture2D(imageTexture, vUv + uv2NoiseG) * moreLessGreenForLayer2;
+          vec4 glitchColor2B = texture2D(imageTexture, vUv + uv2NoiseB) * moreLessBlueForLayer2;
+          vec4 glitchColor2A = texture2D(imageTexture, vUv + uv2NoiseA) * moreLessAlphaForLayer2;
+
+          vec4 glitchColor3R = texture2D(imageTexture, vUv + uv3NoiseR) * moreLessRedForLayer3;
+          vec4 glitchColor3G = texture2D(imageTexture, vUv + uv3NoiseG) * moreLessGreenForLayer3;
+          vec4 glitchColor3B = texture2D(imageTexture, vUv + uv3NoiseB) * moreLessBlueForLayer3;
+          vec4 glitchColor3A = texture2D(imageTexture, vUv + uv3NoiseA) * moreLessAlphaForLayer3;
+
+          vec4 mixedFromLayer1n2 = vec4(
             mix(glitchColor1R.r, glitchColor2R.r, 0.5),
             mix(glitchColor1G.g, glitchColor2G.g, 0.5),
             mix(glitchColor1B.b, glitchColor2B.b, 0.5),
             mix(glitchColor1A.a, glitchColor2A.a, 0.5)
           );
 
-          outColor = vec4(
-            mix(outColor.r, glitchColor3R.r, 0.5),
-            mix(outColor.g, glitchColor3G.g, 0.5),
-            mix(outColor.b, glitchColor3B.b, 0.5),
-            mix(outColor.a, glitchColor3A.a, 0.5)
+          vec4 mixedFromLayer1n2n3 = vec4(
+            mix(mixedFromLayer1n2.r, glitchColor3R.r, 0.5),
+            mix(mixedFromLayer1n2.g, glitchColor3G.g, 0.5),
+            mix(mixedFromLayer1n2.b, glitchColor3B.b, 0.5),
+            mix(mixedFromLayer1n2.a, glitchColor3A.a, 0.5)
           );
 
+          vec4 finalOutput = mixedFromLayer1n2n3;
           //sRGBToLinear
           gl_FragColor.rgb = vec3(
-            pow(outColor.r, satuation),
-            pow(outColor.g, satuation),
-            pow(outColor.b, satuation)
+            pow(finalOutput.r, satuation),
+            pow(finalOutput.g, satuation),
+            pow(finalOutput.b, satuation)
           ) * lightness;
 
-          gl_FragColor.a = outColor.a;
+          gl_FragColor.a = finalOutput.a;
         }
 
         `,
@@ -382,8 +400,7 @@ class VideoAPI {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 0;
             this.uniforms2.overallEffectLevel.value = 0;
-          }
-          else if (frame > 30 && frame < 75) {
+          } else if (frame > 30 && frame < 75) {
             this.uniforms0.overallEffectLevel.value = 0;
             this.uniforms1.overallEffectLevel.value = 1;
             this.uniforms2.overallEffectLevel.value = 0;
