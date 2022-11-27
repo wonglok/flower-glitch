@@ -497,6 +497,9 @@ class VideoAPI {
         importObjects.ref_progress_box.innerText = "";
         importObjects.ref_download_btn.href = url;
         importObjects.ref_download_btn.download = "Lancome.mp4";
+        if ("ontouchstart" in window) {
+          importObjects.ref_download_btn.click();
+        }
         importObjects.ref_download_btn.querySelector("button").disabled = false;
       });
       /*
