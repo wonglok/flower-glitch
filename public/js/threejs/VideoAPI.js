@@ -150,7 +150,8 @@ class VideoAPI {
     };
 
     this.fScene = new Scene();
-    this.fScene.background = new Color("#670009");
+    // this.fScene.background = new Color("#670009");
+    this.fScene.background = new Color("#000000");
     // For background, please use img/bg_red.jpg
 
     let makeShader = ({ uniforms }) => {
@@ -330,7 +331,6 @@ class VideoAPI {
     this.fsQuad0 = new FullScreenQuad(makeShader({ uniforms: this.uniforms0 }));
     this.fsQuad0._mesh.position.z += -0.001;
     this.fScene.add(this.fsQuad0._mesh);
-    this.fsQuad0._mesh.visible = false;
 
     this.fsQuad1 = new FullScreenQuad(makeShader({ uniforms: this.uniforms1 }));
     this.fsQuad1._mesh.position.z += 0.0;
