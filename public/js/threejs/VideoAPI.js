@@ -479,9 +479,11 @@ class VideoAPI {
         encoder.finalize();
 
         const uint8Array = encoder.FS.readFile(encoder.outputFilename);
-        console.log(uint8Array);
+        console.log(uint8Array.buffer);
 
-        let url = URL.createObjectURL(new Blob([uint8Array]));
+        let url = URL.createObjectURL(
+          new Blob([uint8Array.buffer], { type: "application/octet-stream" })
+        );
 
         importObjects.ref_video.src = url;
         // importObjects.ref_video.style.position = "fixed";
@@ -494,7 +496,7 @@ class VideoAPI {
 
         importObjects.ref_progress_box.innerText = "";
         importObjects.ref_download_btn.href = url;
-        importObjects.ref_download_btn.download = "lancome.mp4";
+        importObjects.ref_download_btn.download = "Lancome.mp4";
         importObjects.ref_download_btn.querySelector("button").disabled = false;
       });
       /*
